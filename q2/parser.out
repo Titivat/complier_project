@@ -1,0 +1,62 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ADD
+    DIV
+    EQU
+    EQUEQU
+    GREATER
+    GREATEREQU
+    INTDIV
+    LESS
+    LESSEUQ
+    LPAREN
+    MUL
+    NOTEQU
+    POW
+    RPAREN
+    SCI
+    SUB
+    VAR
+
+Grammar
+
+Rule 0     S' -> calc
+Rule 1     calc -> expression
+Rule 2     calc -> empty
+Rule 3     expression -> INT
+Rule 4     expression -> FLOAT
+Rule 5     expression -> STRING
+Rule 6     empty -> <empty>
+
+Terminals, with rules where they appear
+
+ADD                  : 
+DIV                  : 
+EQU                  : 
+EQUEQU               : 
+FLOAT                : 4
+GREATER              : 
+GREATEREQU           : 
+INT                  : 3
+INTDIV               : 
+LESS                 : 
+LESSEUQ              : 
+LPAREN               : 
+MUL                  : 
+NOTEQU               : 
+POW                  : 
+RPAREN               : 
+SCI                  : 
+SUB                  : 
+VAR                  : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+STRING               : 5
+calc                 : 0
+empty                : 2
+expression           : 1
+
