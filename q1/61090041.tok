@@ -1,0 +1,8 @@
+23/NUM +/+ 8/NUM 
+2.5/NUM */* 0/NUM 
+5/NUM NUM/VAR ^/pow 3.0/NUM 
+x/VAR =/= 5/NUM 
+10/NUM */* x/VAR 
+x/VAR =/= y/VAR 
+x/VAR !=/!= 5/NUM 
+X#/ERR +/+ 8/NUM 
