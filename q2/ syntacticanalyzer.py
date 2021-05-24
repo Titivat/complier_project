@@ -15,8 +15,7 @@ def p_calc(p):
          | var_assign
          | empty
     '''
-    saveTofile(p[1])
-
+    
 def p_var_assign(p):
     '''
     var_assign : VAR EQU expression
@@ -84,14 +83,6 @@ def p_empty(p):
     '''
     p[0] = None
 
-def saveTofile(p):
-
-    outString = ""
-    for item in range( len(p) ):
-        outString += str(p[item])
-    global writeFile
-    writeFile.write( '(' + outString + ')' + '\n')
-
 # main
 parser = yacc.yacc()
 path = os.getcwd()
@@ -106,6 +97,7 @@ for line in range( len(itemList)):
     try:
         itemList[line].replace(" ", "")
         parser.parse( itemList[line] , lexer = lexer)
+        writeFile.write( '(' + itemList[line] + ')' + '\n')
     except Exception as e:
         if( error_status == "error" ):
             error = "Error in line " + str(line + 1) + ", pos " + str(e) + '\n'
