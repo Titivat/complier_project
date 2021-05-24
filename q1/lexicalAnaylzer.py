@@ -1,5 +1,4 @@
 import ply.lex as lex
-import os
 
 tokens = [
     'INT',
@@ -104,11 +103,11 @@ def getOutString( toks ):
     return outString
 
 #main
-fin = open(os.getcwd() + "/input.txt", 'r')
+fin = open( "./input.txt", 'r')
 body = fin.read().split("\n")
 fin.close()
 
-fin = open(os.getcwd() + "/q1/61090041.tok", 'w')
+fin = open( "./q1/61090041.tok", 'w')
 
 inputList = body
 

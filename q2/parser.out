@@ -3,8 +3,6 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Unused terminals:
 
     INTDIV
-    LPAREN
-    RPAREN
 
 Grammar
 
@@ -27,8 +25,10 @@ Rule 15    expression -> expression NOTEQU expression
 Rule 16    expression -> INT
 Rule 17    expression -> FLOAT
 Rule 18    expression -> SCI
-Rule 19    expression -> VAR
-Rule 20    empty -> <empty>
+Rule 19    expression -> parentheses
+Rule 20    parentheses -> LPAREN expression RPAREN
+Rule 21    expression -> VAR
+Rule 22    empty -> <empty>
 
 Terminals, with rules where they appear
 
@@ -43,21 +43,22 @@ INT                  : 16
 INTDIV               : 
 LESS                 : 12
 LESSEUQ              : 13
-LPAREN               : 
+LPAREN               : 20
 MUL                  : 6
 NOTEQU               : 15
 POW                  : 5
-RPAREN               : 
+RPAREN               : 20
 SCI                  : 18
 SUB                  : 8
-VAR                  : 4 19
+VAR                  : 4 21
 error                : 
 
 Nonterminals, with rules where they appear
 
 calc                 : 0
 empty                : 3
-expression           : 1 4 5 5 6 6 7 7 8 8 9 9 10 10 11 11 12 12 13 13 14 14 15 15
+expression           : 1 4 5 5 6 6 7 7 8 8 9 9 10 10 11 11 12 12 13 13 14 14 15 15 20
+parentheses          : 19
 var_assign           : 2
 
 Parsing method: LALR
@@ -82,20 +83,24 @@ state 0
     (16) expression -> . INT
     (17) expression -> . FLOAT
     (18) expression -> . SCI
-    (19) expression -> . VAR
+    (19) expression -> . parentheses
+    (21) expression -> . VAR
     (4) var_assign -> . VAR EQU expression
-    (20) empty -> .
+    (22) empty -> .
+    (20) parentheses -> . LPAREN expression RPAREN
 
     INT             shift and go to state 5
     FLOAT           shift and go to state 6
     SCI             shift and go to state 7
-    VAR             shift and go to state 8
-    $end            reduce using rule 20 (empty -> .)
+    VAR             shift and go to state 9
+    $end            reduce using rule 22 (empty -> .)
+    LPAREN          shift and go to state 10
 
     calc                           shift and go to state 1
     expression                     shift and go to state 2
     var_assign                     shift and go to state 3
     empty                          shift and go to state 4
+    parentheses                    shift and go to state 8
 
 state 1
 
@@ -119,17 +124,17 @@ state 2
     (15) expression -> expression . NOTEQU expression
 
     $end            reduce using rule 1 (calc -> expression .)
-    POW             shift and go to state 9
-    MUL             shift and go to state 10
-    DIV             shift and go to state 11
-    SUB             shift and go to state 12
-    ADD             shift and go to state 13
-    GREATER         shift and go to state 14
-    GREATEREQU      shift and go to state 15
-    LESS            shift and go to state 16
-    LESSEUQ         shift and go to state 17
-    EQUEQU          shift and go to state 18
-    NOTEQU          shift and go to state 19
+    POW             shift and go to state 11
+    MUL             shift and go to state 12
+    DIV             shift and go to state 13
+    SUB             shift and go to state 14
+    ADD             shift and go to state 15
+    GREATER         shift and go to state 16
+    GREATEREQU      shift and go to state 17
+    LESS            shift and go to state 18
+    LESSEUQ         shift and go to state 19
+    EQUEQU          shift and go to state 20
+    NOTEQU          shift and go to state 21
 
 
 state 3
@@ -162,6 +167,7 @@ state 5
     EQUEQU          reduce using rule 16 (expression -> INT .)
     NOTEQU          reduce using rule 16 (expression -> INT .)
     $end            reduce using rule 16 (expression -> INT .)
+    RPAREN          reduce using rule 16 (expression -> INT .)
 
 
 state 6
@@ -180,6 +186,7 @@ state 6
     EQUEQU          reduce using rule 17 (expression -> FLOAT .)
     NOTEQU          reduce using rule 17 (expression -> FLOAT .)
     $end            reduce using rule 17 (expression -> FLOAT .)
+    RPAREN          reduce using rule 17 (expression -> FLOAT .)
 
 
 state 7
@@ -198,29 +205,79 @@ state 7
     EQUEQU          reduce using rule 18 (expression -> SCI .)
     NOTEQU          reduce using rule 18 (expression -> SCI .)
     $end            reduce using rule 18 (expression -> SCI .)
+    RPAREN          reduce using rule 18 (expression -> SCI .)
 
 
 state 8
 
-    (19) expression -> VAR .
-    (4) var_assign -> VAR . EQU expression
+    (19) expression -> parentheses .
 
-    POW             reduce using rule 19 (expression -> VAR .)
-    MUL             reduce using rule 19 (expression -> VAR .)
-    DIV             reduce using rule 19 (expression -> VAR .)
-    SUB             reduce using rule 19 (expression -> VAR .)
-    ADD             reduce using rule 19 (expression -> VAR .)
-    GREATER         reduce using rule 19 (expression -> VAR .)
-    GREATEREQU      reduce using rule 19 (expression -> VAR .)
-    LESS            reduce using rule 19 (expression -> VAR .)
-    LESSEUQ         reduce using rule 19 (expression -> VAR .)
-    EQUEQU          reduce using rule 19 (expression -> VAR .)
-    NOTEQU          reduce using rule 19 (expression -> VAR .)
-    $end            reduce using rule 19 (expression -> VAR .)
-    EQU             shift and go to state 20
+    POW             reduce using rule 19 (expression -> parentheses .)
+    MUL             reduce using rule 19 (expression -> parentheses .)
+    DIV             reduce using rule 19 (expression -> parentheses .)
+    SUB             reduce using rule 19 (expression -> parentheses .)
+    ADD             reduce using rule 19 (expression -> parentheses .)
+    GREATER         reduce using rule 19 (expression -> parentheses .)
+    GREATEREQU      reduce using rule 19 (expression -> parentheses .)
+    LESS            reduce using rule 19 (expression -> parentheses .)
+    LESSEUQ         reduce using rule 19 (expression -> parentheses .)
+    EQUEQU          reduce using rule 19 (expression -> parentheses .)
+    NOTEQU          reduce using rule 19 (expression -> parentheses .)
+    $end            reduce using rule 19 (expression -> parentheses .)
+    RPAREN          reduce using rule 19 (expression -> parentheses .)
 
 
 state 9
+
+    (21) expression -> VAR .
+    (4) var_assign -> VAR . EQU expression
+
+    POW             reduce using rule 21 (expression -> VAR .)
+    MUL             reduce using rule 21 (expression -> VAR .)
+    DIV             reduce using rule 21 (expression -> VAR .)
+    SUB             reduce using rule 21 (expression -> VAR .)
+    ADD             reduce using rule 21 (expression -> VAR .)
+    GREATER         reduce using rule 21 (expression -> VAR .)
+    GREATEREQU      reduce using rule 21 (expression -> VAR .)
+    LESS            reduce using rule 21 (expression -> VAR .)
+    LESSEUQ         reduce using rule 21 (expression -> VAR .)
+    EQUEQU          reduce using rule 21 (expression -> VAR .)
+    NOTEQU          reduce using rule 21 (expression -> VAR .)
+    $end            reduce using rule 21 (expression -> VAR .)
+    EQU             shift and go to state 22
+
+
+state 10
+
+    (20) parentheses -> LPAREN . expression RPAREN
+    (5) expression -> . expression POW expression
+    (6) expression -> . expression MUL expression
+    (7) expression -> . expression DIV expression
+    (8) expression -> . expression SUB expression
+    (9) expression -> . expression ADD expression
+    (10) expression -> . expression GREATER expression
+    (11) expression -> . expression GREATEREQU expression
+    (12) expression -> . expression LESS expression
+    (13) expression -> . expression LESSEUQ expression
+    (14) expression -> . expression EQUEQU expression
+    (15) expression -> . expression NOTEQU expression
+    (16) expression -> . INT
+    (17) expression -> . FLOAT
+    (18) expression -> . SCI
+    (19) expression -> . parentheses
+    (21) expression -> . VAR
+    (20) parentheses -> . LPAREN expression RPAREN
+
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    SCI             shift and go to state 7
+    VAR             shift and go to state 24
+    LPAREN          shift and go to state 10
+
+    expression                     shift and go to state 23
+    parentheses                    shift and go to state 8
+
+state 11
 
     (5) expression -> expression POW . expression
     (5) expression -> . expression POW expression
@@ -237,16 +294,20 @@ state 9
     (16) expression -> . INT
     (17) expression -> . FLOAT
     (18) expression -> . SCI
-    (19) expression -> . VAR
+    (19) expression -> . parentheses
+    (21) expression -> . VAR
+    (20) parentheses -> . LPAREN expression RPAREN
 
     INT             shift and go to state 5
     FLOAT           shift and go to state 6
     SCI             shift and go to state 7
-    VAR             shift and go to state 22
+    VAR             shift and go to state 24
+    LPAREN          shift and go to state 10
 
-    expression                     shift and go to state 21
+    expression                     shift and go to state 25
+    parentheses                    shift and go to state 8
 
-state 10
+state 12
 
     (6) expression -> expression MUL . expression
     (5) expression -> . expression POW expression
@@ -263,16 +324,20 @@ state 10
     (16) expression -> . INT
     (17) expression -> . FLOAT
     (18) expression -> . SCI
-    (19) expression -> . VAR
+    (19) expression -> . parentheses
+    (21) expression -> . VAR
+    (20) parentheses -> . LPAREN expression RPAREN
 
     INT             shift and go to state 5
     FLOAT           shift and go to state 6
     SCI             shift and go to state 7
-    VAR             shift and go to state 22
+    VAR             shift and go to state 24
+    LPAREN          shift and go to state 10
 
-    expression                     shift and go to state 23
+    expression                     shift and go to state 26
+    parentheses                    shift and go to state 8
 
-state 11
+state 13
 
     (7) expression -> expression DIV . expression
     (5) expression -> . expression POW expression
@@ -289,16 +354,20 @@ state 11
     (16) expression -> . INT
     (17) expression -> . FLOAT
     (18) expression -> . SCI
-    (19) expression -> . VAR
+    (19) expression -> . parentheses
+    (21) expression -> . VAR
+    (20) parentheses -> . LPAREN expression RPAREN
 
     INT             shift and go to state 5
     FLOAT           shift and go to state 6
     SCI             shift and go to state 7
-    VAR             shift and go to state 22
+    VAR             shift and go to state 24
+    LPAREN          shift and go to state 10
 
-    expression                     shift and go to state 24
+    expression                     shift and go to state 27
+    parentheses                    shift and go to state 8
 
-state 12
+state 14
 
     (8) expression -> expression SUB . expression
     (5) expression -> . expression POW expression
@@ -315,16 +384,20 @@ state 12
     (16) expression -> . INT
     (17) expression -> . FLOAT
     (18) expression -> . SCI
-    (19) expression -> . VAR
+    (19) expression -> . parentheses
+    (21) expression -> . VAR
+    (20) parentheses -> . LPAREN expression RPAREN
 
     INT             shift and go to state 5
     FLOAT           shift and go to state 6
     SCI             shift and go to state 7
-    VAR             shift and go to state 22
+    VAR             shift and go to state 24
+    LPAREN          shift and go to state 10
 
-    expression                     shift and go to state 25
+    expression                     shift and go to state 28
+    parentheses                    shift and go to state 8
 
-state 13
+state 15
 
     (9) expression -> expression ADD . expression
     (5) expression -> . expression POW expression
@@ -341,16 +414,20 @@ state 13
     (16) expression -> . INT
     (17) expression -> . FLOAT
     (18) expression -> . SCI
-    (19) expression -> . VAR
+    (19) expression -> . parentheses
+    (21) expression -> . VAR
+    (20) parentheses -> . LPAREN expression RPAREN
 
     INT             shift and go to state 5
     FLOAT           shift and go to state 6
     SCI             shift and go to state 7
-    VAR             shift and go to state 22
+    VAR             shift and go to state 24
+    LPAREN          shift and go to state 10
 
-    expression                     shift and go to state 26
+    expression                     shift and go to state 29
+    parentheses                    shift and go to state 8
 
-state 14
+state 16
 
     (10) expression -> expression GREATER . expression
     (5) expression -> . expression POW expression
@@ -367,16 +444,20 @@ state 14
     (16) expression -> . INT
     (17) expression -> . FLOAT
     (18) expression -> . SCI
-    (19) expression -> . VAR
+    (19) expression -> . parentheses
+    (21) expression -> . VAR
+    (20) parentheses -> . LPAREN expression RPAREN
 
     INT             shift and go to state 5
     FLOAT           shift and go to state 6
     SCI             shift and go to state 7
-    VAR             shift and go to state 22
+    VAR             shift and go to state 24
+    LPAREN          shift and go to state 10
 
-    expression                     shift and go to state 27
+    expression                     shift and go to state 30
+    parentheses                    shift and go to state 8
 
-state 15
+state 17
 
     (11) expression -> expression GREATEREQU . expression
     (5) expression -> . expression POW expression
@@ -393,16 +474,20 @@ state 15
     (16) expression -> . INT
     (17) expression -> . FLOAT
     (18) expression -> . SCI
-    (19) expression -> . VAR
+    (19) expression -> . parentheses
+    (21) expression -> . VAR
+    (20) parentheses -> . LPAREN expression RPAREN
 
     INT             shift and go to state 5
     FLOAT           shift and go to state 6
     SCI             shift and go to state 7
-    VAR             shift and go to state 22
+    VAR             shift and go to state 24
+    LPAREN          shift and go to state 10
 
-    expression                     shift and go to state 28
+    expression                     shift and go to state 31
+    parentheses                    shift and go to state 8
 
-state 16
+state 18
 
     (12) expression -> expression LESS . expression
     (5) expression -> . expression POW expression
@@ -419,16 +504,20 @@ state 16
     (16) expression -> . INT
     (17) expression -> . FLOAT
     (18) expression -> . SCI
-    (19) expression -> . VAR
+    (19) expression -> . parentheses
+    (21) expression -> . VAR
+    (20) parentheses -> . LPAREN expression RPAREN
 
     INT             shift and go to state 5
     FLOAT           shift and go to state 6
     SCI             shift and go to state 7
-    VAR             shift and go to state 22
+    VAR             shift and go to state 24
+    LPAREN          shift and go to state 10
 
-    expression                     shift and go to state 29
+    expression                     shift and go to state 32
+    parentheses                    shift and go to state 8
 
-state 17
+state 19
 
     (13) expression -> expression LESSEUQ . expression
     (5) expression -> . expression POW expression
@@ -445,16 +534,20 @@ state 17
     (16) expression -> . INT
     (17) expression -> . FLOAT
     (18) expression -> . SCI
-    (19) expression -> . VAR
+    (19) expression -> . parentheses
+    (21) expression -> . VAR
+    (20) parentheses -> . LPAREN expression RPAREN
 
     INT             shift and go to state 5
     FLOAT           shift and go to state 6
     SCI             shift and go to state 7
-    VAR             shift and go to state 22
+    VAR             shift and go to state 24
+    LPAREN          shift and go to state 10
 
-    expression                     shift and go to state 30
+    expression                     shift and go to state 33
+    parentheses                    shift and go to state 8
 
-state 18
+state 20
 
     (14) expression -> expression EQUEQU . expression
     (5) expression -> . expression POW expression
@@ -471,16 +564,20 @@ state 18
     (16) expression -> . INT
     (17) expression -> . FLOAT
     (18) expression -> . SCI
-    (19) expression -> . VAR
+    (19) expression -> . parentheses
+    (21) expression -> . VAR
+    (20) parentheses -> . LPAREN expression RPAREN
 
     INT             shift and go to state 5
     FLOAT           shift and go to state 6
     SCI             shift and go to state 7
-    VAR             shift and go to state 22
+    VAR             shift and go to state 24
+    LPAREN          shift and go to state 10
 
-    expression                     shift and go to state 31
+    expression                     shift and go to state 34
+    parentheses                    shift and go to state 8
 
-state 19
+state 21
 
     (15) expression -> expression NOTEQU . expression
     (5) expression -> . expression POW expression
@@ -497,16 +594,20 @@ state 19
     (16) expression -> . INT
     (17) expression -> . FLOAT
     (18) expression -> . SCI
-    (19) expression -> . VAR
+    (19) expression -> . parentheses
+    (21) expression -> . VAR
+    (20) parentheses -> . LPAREN expression RPAREN
 
     INT             shift and go to state 5
     FLOAT           shift and go to state 6
     SCI             shift and go to state 7
-    VAR             shift and go to state 22
+    VAR             shift and go to state 24
+    LPAREN          shift and go to state 10
 
-    expression                     shift and go to state 32
+    expression                     shift and go to state 35
+    parentheses                    shift and go to state 8
 
-state 20
+state 22
 
     (4) var_assign -> VAR EQU . expression
     (5) expression -> . expression POW expression
@@ -523,16 +624,68 @@ state 20
     (16) expression -> . INT
     (17) expression -> . FLOAT
     (18) expression -> . SCI
-    (19) expression -> . VAR
+    (19) expression -> . parentheses
+    (21) expression -> . VAR
+    (20) parentheses -> . LPAREN expression RPAREN
 
     INT             shift and go to state 5
     FLOAT           shift and go to state 6
     SCI             shift and go to state 7
-    VAR             shift and go to state 22
+    VAR             shift and go to state 24
+    LPAREN          shift and go to state 10
 
-    expression                     shift and go to state 33
+    expression                     shift and go to state 36
+    parentheses                    shift and go to state 8
 
-state 21
+state 23
+
+    (20) parentheses -> LPAREN expression . RPAREN
+    (5) expression -> expression . POW expression
+    (6) expression -> expression . MUL expression
+    (7) expression -> expression . DIV expression
+    (8) expression -> expression . SUB expression
+    (9) expression -> expression . ADD expression
+    (10) expression -> expression . GREATER expression
+    (11) expression -> expression . GREATEREQU expression
+    (12) expression -> expression . LESS expression
+    (13) expression -> expression . LESSEUQ expression
+    (14) expression -> expression . EQUEQU expression
+    (15) expression -> expression . NOTEQU expression
+
+    RPAREN          shift and go to state 37
+    POW             shift and go to state 11
+    MUL             shift and go to state 12
+    DIV             shift and go to state 13
+    SUB             shift and go to state 14
+    ADD             shift and go to state 15
+    GREATER         shift and go to state 16
+    GREATEREQU      shift and go to state 17
+    LESS            shift and go to state 18
+    LESSEUQ         shift and go to state 19
+    EQUEQU          shift and go to state 20
+    NOTEQU          shift and go to state 21
+
+
+state 24
+
+    (21) expression -> VAR .
+
+    RPAREN          reduce using rule 21 (expression -> VAR .)
+    POW             reduce using rule 21 (expression -> VAR .)
+    MUL             reduce using rule 21 (expression -> VAR .)
+    DIV             reduce using rule 21 (expression -> VAR .)
+    SUB             reduce using rule 21 (expression -> VAR .)
+    ADD             reduce using rule 21 (expression -> VAR .)
+    GREATER         reduce using rule 21 (expression -> VAR .)
+    GREATEREQU      reduce using rule 21 (expression -> VAR .)
+    LESS            reduce using rule 21 (expression -> VAR .)
+    LESSEUQ         reduce using rule 21 (expression -> VAR .)
+    EQUEQU          reduce using rule 21 (expression -> VAR .)
+    NOTEQU          reduce using rule 21 (expression -> VAR .)
+    $end            reduce using rule 21 (expression -> VAR .)
+
+
+state 25
 
     (5) expression -> expression POW expression .
     (5) expression -> expression . POW expression
@@ -559,17 +712,18 @@ state 21
   ! shift/reduce conflict for EQUEQU resolved as shift
   ! shift/reduce conflict for NOTEQU resolved as shift
     $end            reduce using rule 5 (expression -> expression POW expression .)
-    POW             shift and go to state 9
-    MUL             shift and go to state 10
-    DIV             shift and go to state 11
-    SUB             shift and go to state 12
-    ADD             shift and go to state 13
-    GREATER         shift and go to state 14
-    GREATEREQU      shift and go to state 15
-    LESS            shift and go to state 16
-    LESSEUQ         shift and go to state 17
-    EQUEQU          shift and go to state 18
-    NOTEQU          shift and go to state 19
+    RPAREN          reduce using rule 5 (expression -> expression POW expression .)
+    POW             shift and go to state 11
+    MUL             shift and go to state 12
+    DIV             shift and go to state 13
+    SUB             shift and go to state 14
+    ADD             shift and go to state 15
+    GREATER         shift and go to state 16
+    GREATEREQU      shift and go to state 17
+    LESS            shift and go to state 18
+    LESSEUQ         shift and go to state 19
+    EQUEQU          shift and go to state 20
+    NOTEQU          shift and go to state 21
 
   ! POW             [ reduce using rule 5 (expression -> expression POW expression .) ]
   ! MUL             [ reduce using rule 5 (expression -> expression POW expression .) ]
@@ -584,25 +738,7 @@ state 21
   ! NOTEQU          [ reduce using rule 5 (expression -> expression POW expression .) ]
 
 
-state 22
-
-    (19) expression -> VAR .
-
-    POW             reduce using rule 19 (expression -> VAR .)
-    MUL             reduce using rule 19 (expression -> VAR .)
-    DIV             reduce using rule 19 (expression -> VAR .)
-    SUB             reduce using rule 19 (expression -> VAR .)
-    ADD             reduce using rule 19 (expression -> VAR .)
-    GREATER         reduce using rule 19 (expression -> VAR .)
-    GREATEREQU      reduce using rule 19 (expression -> VAR .)
-    LESS            reduce using rule 19 (expression -> VAR .)
-    LESSEUQ         reduce using rule 19 (expression -> VAR .)
-    EQUEQU          reduce using rule 19 (expression -> VAR .)
-    NOTEQU          reduce using rule 19 (expression -> VAR .)
-    $end            reduce using rule 19 (expression -> VAR .)
-
-
-state 23
+state 26
 
     (6) expression -> expression MUL expression .
     (5) expression -> expression . POW expression
@@ -629,17 +765,18 @@ state 23
   ! shift/reduce conflict for EQUEQU resolved as shift
   ! shift/reduce conflict for NOTEQU resolved as shift
     $end            reduce using rule 6 (expression -> expression MUL expression .)
-    POW             shift and go to state 9
-    MUL             shift and go to state 10
-    DIV             shift and go to state 11
-    SUB             shift and go to state 12
-    ADD             shift and go to state 13
-    GREATER         shift and go to state 14
-    GREATEREQU      shift and go to state 15
-    LESS            shift and go to state 16
-    LESSEUQ         shift and go to state 17
-    EQUEQU          shift and go to state 18
-    NOTEQU          shift and go to state 19
+    RPAREN          reduce using rule 6 (expression -> expression MUL expression .)
+    POW             shift and go to state 11
+    MUL             shift and go to state 12
+    DIV             shift and go to state 13
+    SUB             shift and go to state 14
+    ADD             shift and go to state 15
+    GREATER         shift and go to state 16
+    GREATEREQU      shift and go to state 17
+    LESS            shift and go to state 18
+    LESSEUQ         shift and go to state 19
+    EQUEQU          shift and go to state 20
+    NOTEQU          shift and go to state 21
 
   ! POW             [ reduce using rule 6 (expression -> expression MUL expression .) ]
   ! MUL             [ reduce using rule 6 (expression -> expression MUL expression .) ]
@@ -654,7 +791,7 @@ state 23
   ! NOTEQU          [ reduce using rule 6 (expression -> expression MUL expression .) ]
 
 
-state 24
+state 27
 
     (7) expression -> expression DIV expression .
     (5) expression -> expression . POW expression
@@ -681,17 +818,18 @@ state 24
   ! shift/reduce conflict for EQUEQU resolved as shift
   ! shift/reduce conflict for NOTEQU resolved as shift
     $end            reduce using rule 7 (expression -> expression DIV expression .)
-    POW             shift and go to state 9
-    MUL             shift and go to state 10
-    DIV             shift and go to state 11
-    SUB             shift and go to state 12
-    ADD             shift and go to state 13
-    GREATER         shift and go to state 14
-    GREATEREQU      shift and go to state 15
-    LESS            shift and go to state 16
-    LESSEUQ         shift and go to state 17
-    EQUEQU          shift and go to state 18
-    NOTEQU          shift and go to state 19
+    RPAREN          reduce using rule 7 (expression -> expression DIV expression .)
+    POW             shift and go to state 11
+    MUL             shift and go to state 12
+    DIV             shift and go to state 13
+    SUB             shift and go to state 14
+    ADD             shift and go to state 15
+    GREATER         shift and go to state 16
+    GREATEREQU      shift and go to state 17
+    LESS            shift and go to state 18
+    LESSEUQ         shift and go to state 19
+    EQUEQU          shift and go to state 20
+    NOTEQU          shift and go to state 21
 
   ! POW             [ reduce using rule 7 (expression -> expression DIV expression .) ]
   ! MUL             [ reduce using rule 7 (expression -> expression DIV expression .) ]
@@ -706,7 +844,7 @@ state 24
   ! NOTEQU          [ reduce using rule 7 (expression -> expression DIV expression .) ]
 
 
-state 25
+state 28
 
     (8) expression -> expression SUB expression .
     (5) expression -> expression . POW expression
@@ -733,17 +871,18 @@ state 25
   ! shift/reduce conflict for EQUEQU resolved as shift
   ! shift/reduce conflict for NOTEQU resolved as shift
     $end            reduce using rule 8 (expression -> expression SUB expression .)
-    POW             shift and go to state 9
-    MUL             shift and go to state 10
-    DIV             shift and go to state 11
-    SUB             shift and go to state 12
-    ADD             shift and go to state 13
-    GREATER         shift and go to state 14
-    GREATEREQU      shift and go to state 15
-    LESS            shift and go to state 16
-    LESSEUQ         shift and go to state 17
-    EQUEQU          shift and go to state 18
-    NOTEQU          shift and go to state 19
+    RPAREN          reduce using rule 8 (expression -> expression SUB expression .)
+    POW             shift and go to state 11
+    MUL             shift and go to state 12
+    DIV             shift and go to state 13
+    SUB             shift and go to state 14
+    ADD             shift and go to state 15
+    GREATER         shift and go to state 16
+    GREATEREQU      shift and go to state 17
+    LESS            shift and go to state 18
+    LESSEUQ         shift and go to state 19
+    EQUEQU          shift and go to state 20
+    NOTEQU          shift and go to state 21
 
   ! POW             [ reduce using rule 8 (expression -> expression SUB expression .) ]
   ! MUL             [ reduce using rule 8 (expression -> expression SUB expression .) ]
@@ -758,7 +897,7 @@ state 25
   ! NOTEQU          [ reduce using rule 8 (expression -> expression SUB expression .) ]
 
 
-state 26
+state 29
 
     (9) expression -> expression ADD expression .
     (5) expression -> expression . POW expression
@@ -785,17 +924,18 @@ state 26
   ! shift/reduce conflict for EQUEQU resolved as shift
   ! shift/reduce conflict for NOTEQU resolved as shift
     $end            reduce using rule 9 (expression -> expression ADD expression .)
-    POW             shift and go to state 9
-    MUL             shift and go to state 10
-    DIV             shift and go to state 11
-    SUB             shift and go to state 12
-    ADD             shift and go to state 13
-    GREATER         shift and go to state 14
-    GREATEREQU      shift and go to state 15
-    LESS            shift and go to state 16
-    LESSEUQ         shift and go to state 17
-    EQUEQU          shift and go to state 18
-    NOTEQU          shift and go to state 19
+    RPAREN          reduce using rule 9 (expression -> expression ADD expression .)
+    POW             shift and go to state 11
+    MUL             shift and go to state 12
+    DIV             shift and go to state 13
+    SUB             shift and go to state 14
+    ADD             shift and go to state 15
+    GREATER         shift and go to state 16
+    GREATEREQU      shift and go to state 17
+    LESS            shift and go to state 18
+    LESSEUQ         shift and go to state 19
+    EQUEQU          shift and go to state 20
+    NOTEQU          shift and go to state 21
 
   ! POW             [ reduce using rule 9 (expression -> expression ADD expression .) ]
   ! MUL             [ reduce using rule 9 (expression -> expression ADD expression .) ]
@@ -810,7 +950,7 @@ state 26
   ! NOTEQU          [ reduce using rule 9 (expression -> expression ADD expression .) ]
 
 
-state 27
+state 30
 
     (10) expression -> expression GREATER expression .
     (5) expression -> expression . POW expression
@@ -837,17 +977,18 @@ state 27
   ! shift/reduce conflict for EQUEQU resolved as shift
   ! shift/reduce conflict for NOTEQU resolved as shift
     $end            reduce using rule 10 (expression -> expression GREATER expression .)
-    POW             shift and go to state 9
-    MUL             shift and go to state 10
-    DIV             shift and go to state 11
-    SUB             shift and go to state 12
-    ADD             shift and go to state 13
-    GREATER         shift and go to state 14
-    GREATEREQU      shift and go to state 15
-    LESS            shift and go to state 16
-    LESSEUQ         shift and go to state 17
-    EQUEQU          shift and go to state 18
-    NOTEQU          shift and go to state 19
+    RPAREN          reduce using rule 10 (expression -> expression GREATER expression .)
+    POW             shift and go to state 11
+    MUL             shift and go to state 12
+    DIV             shift and go to state 13
+    SUB             shift and go to state 14
+    ADD             shift and go to state 15
+    GREATER         shift and go to state 16
+    GREATEREQU      shift and go to state 17
+    LESS            shift and go to state 18
+    LESSEUQ         shift and go to state 19
+    EQUEQU          shift and go to state 20
+    NOTEQU          shift and go to state 21
 
   ! POW             [ reduce using rule 10 (expression -> expression GREATER expression .) ]
   ! MUL             [ reduce using rule 10 (expression -> expression GREATER expression .) ]
@@ -862,7 +1003,7 @@ state 27
   ! NOTEQU          [ reduce using rule 10 (expression -> expression GREATER expression .) ]
 
 
-state 28
+state 31
 
     (11) expression -> expression GREATEREQU expression .
     (5) expression -> expression . POW expression
@@ -889,17 +1030,18 @@ state 28
   ! shift/reduce conflict for EQUEQU resolved as shift
   ! shift/reduce conflict for NOTEQU resolved as shift
     $end            reduce using rule 11 (expression -> expression GREATEREQU expression .)
-    POW             shift and go to state 9
-    MUL             shift and go to state 10
-    DIV             shift and go to state 11
-    SUB             shift and go to state 12
-    ADD             shift and go to state 13
-    GREATER         shift and go to state 14
-    GREATEREQU      shift and go to state 15
-    LESS            shift and go to state 16
-    LESSEUQ         shift and go to state 17
-    EQUEQU          shift and go to state 18
-    NOTEQU          shift and go to state 19
+    RPAREN          reduce using rule 11 (expression -> expression GREATEREQU expression .)
+    POW             shift and go to state 11
+    MUL             shift and go to state 12
+    DIV             shift and go to state 13
+    SUB             shift and go to state 14
+    ADD             shift and go to state 15
+    GREATER         shift and go to state 16
+    GREATEREQU      shift and go to state 17
+    LESS            shift and go to state 18
+    LESSEUQ         shift and go to state 19
+    EQUEQU          shift and go to state 20
+    NOTEQU          shift and go to state 21
 
   ! POW             [ reduce using rule 11 (expression -> expression GREATEREQU expression .) ]
   ! MUL             [ reduce using rule 11 (expression -> expression GREATEREQU expression .) ]
@@ -914,7 +1056,7 @@ state 28
   ! NOTEQU          [ reduce using rule 11 (expression -> expression GREATEREQU expression .) ]
 
 
-state 29
+state 32
 
     (12) expression -> expression LESS expression .
     (5) expression -> expression . POW expression
@@ -941,17 +1083,18 @@ state 29
   ! shift/reduce conflict for EQUEQU resolved as shift
   ! shift/reduce conflict for NOTEQU resolved as shift
     $end            reduce using rule 12 (expression -> expression LESS expression .)
-    POW             shift and go to state 9
-    MUL             shift and go to state 10
-    DIV             shift and go to state 11
-    SUB             shift and go to state 12
-    ADD             shift and go to state 13
-    GREATER         shift and go to state 14
-    GREATEREQU      shift and go to state 15
-    LESS            shift and go to state 16
-    LESSEUQ         shift and go to state 17
-    EQUEQU          shift and go to state 18
-    NOTEQU          shift and go to state 19
+    RPAREN          reduce using rule 12 (expression -> expression LESS expression .)
+    POW             shift and go to state 11
+    MUL             shift and go to state 12
+    DIV             shift and go to state 13
+    SUB             shift and go to state 14
+    ADD             shift and go to state 15
+    GREATER         shift and go to state 16
+    GREATEREQU      shift and go to state 17
+    LESS            shift and go to state 18
+    LESSEUQ         shift and go to state 19
+    EQUEQU          shift and go to state 20
+    NOTEQU          shift and go to state 21
 
   ! POW             [ reduce using rule 12 (expression -> expression LESS expression .) ]
   ! MUL             [ reduce using rule 12 (expression -> expression LESS expression .) ]
@@ -966,7 +1109,7 @@ state 29
   ! NOTEQU          [ reduce using rule 12 (expression -> expression LESS expression .) ]
 
 
-state 30
+state 33
 
     (13) expression -> expression LESSEUQ expression .
     (5) expression -> expression . POW expression
@@ -993,17 +1136,18 @@ state 30
   ! shift/reduce conflict for EQUEQU resolved as shift
   ! shift/reduce conflict for NOTEQU resolved as shift
     $end            reduce using rule 13 (expression -> expression LESSEUQ expression .)
-    POW             shift and go to state 9
-    MUL             shift and go to state 10
-    DIV             shift and go to state 11
-    SUB             shift and go to state 12
-    ADD             shift and go to state 13
-    GREATER         shift and go to state 14
-    GREATEREQU      shift and go to state 15
-    LESS            shift and go to state 16
-    LESSEUQ         shift and go to state 17
-    EQUEQU          shift and go to state 18
-    NOTEQU          shift and go to state 19
+    RPAREN          reduce using rule 13 (expression -> expression LESSEUQ expression .)
+    POW             shift and go to state 11
+    MUL             shift and go to state 12
+    DIV             shift and go to state 13
+    SUB             shift and go to state 14
+    ADD             shift and go to state 15
+    GREATER         shift and go to state 16
+    GREATEREQU      shift and go to state 17
+    LESS            shift and go to state 18
+    LESSEUQ         shift and go to state 19
+    EQUEQU          shift and go to state 20
+    NOTEQU          shift and go to state 21
 
   ! POW             [ reduce using rule 13 (expression -> expression LESSEUQ expression .) ]
   ! MUL             [ reduce using rule 13 (expression -> expression LESSEUQ expression .) ]
@@ -1018,7 +1162,7 @@ state 30
   ! NOTEQU          [ reduce using rule 13 (expression -> expression LESSEUQ expression .) ]
 
 
-state 31
+state 34
 
     (14) expression -> expression EQUEQU expression .
     (5) expression -> expression . POW expression
@@ -1045,17 +1189,18 @@ state 31
   ! shift/reduce conflict for EQUEQU resolved as shift
   ! shift/reduce conflict for NOTEQU resolved as shift
     $end            reduce using rule 14 (expression -> expression EQUEQU expression .)
-    POW             shift and go to state 9
-    MUL             shift and go to state 10
-    DIV             shift and go to state 11
-    SUB             shift and go to state 12
-    ADD             shift and go to state 13
-    GREATER         shift and go to state 14
-    GREATEREQU      shift and go to state 15
-    LESS            shift and go to state 16
-    LESSEUQ         shift and go to state 17
-    EQUEQU          shift and go to state 18
-    NOTEQU          shift and go to state 19
+    RPAREN          reduce using rule 14 (expression -> expression EQUEQU expression .)
+    POW             shift and go to state 11
+    MUL             shift and go to state 12
+    DIV             shift and go to state 13
+    SUB             shift and go to state 14
+    ADD             shift and go to state 15
+    GREATER         shift and go to state 16
+    GREATEREQU      shift and go to state 17
+    LESS            shift and go to state 18
+    LESSEUQ         shift and go to state 19
+    EQUEQU          shift and go to state 20
+    NOTEQU          shift and go to state 21
 
   ! POW             [ reduce using rule 14 (expression -> expression EQUEQU expression .) ]
   ! MUL             [ reduce using rule 14 (expression -> expression EQUEQU expression .) ]
@@ -1070,7 +1215,7 @@ state 31
   ! NOTEQU          [ reduce using rule 14 (expression -> expression EQUEQU expression .) ]
 
 
-state 32
+state 35
 
     (15) expression -> expression NOTEQU expression .
     (5) expression -> expression . POW expression
@@ -1097,17 +1242,18 @@ state 32
   ! shift/reduce conflict for EQUEQU resolved as shift
   ! shift/reduce conflict for NOTEQU resolved as shift
     $end            reduce using rule 15 (expression -> expression NOTEQU expression .)
-    POW             shift and go to state 9
-    MUL             shift and go to state 10
-    DIV             shift and go to state 11
-    SUB             shift and go to state 12
-    ADD             shift and go to state 13
-    GREATER         shift and go to state 14
-    GREATEREQU      shift and go to state 15
-    LESS            shift and go to state 16
-    LESSEUQ         shift and go to state 17
-    EQUEQU          shift and go to state 18
-    NOTEQU          shift and go to state 19
+    RPAREN          reduce using rule 15 (expression -> expression NOTEQU expression .)
+    POW             shift and go to state 11
+    MUL             shift and go to state 12
+    DIV             shift and go to state 13
+    SUB             shift and go to state 14
+    ADD             shift and go to state 15
+    GREATER         shift and go to state 16
+    GREATEREQU      shift and go to state 17
+    LESS            shift and go to state 18
+    LESSEUQ         shift and go to state 19
+    EQUEQU          shift and go to state 20
+    NOTEQU          shift and go to state 21
 
   ! POW             [ reduce using rule 15 (expression -> expression NOTEQU expression .) ]
   ! MUL             [ reduce using rule 15 (expression -> expression NOTEQU expression .) ]
@@ -1122,7 +1268,7 @@ state 32
   ! NOTEQU          [ reduce using rule 15 (expression -> expression NOTEQU expression .) ]
 
 
-state 33
+state 36
 
     (4) var_assign -> VAR EQU expression .
     (5) expression -> expression . POW expression
@@ -1138,54 +1284,40 @@ state 33
     (15) expression -> expression . NOTEQU expression
 
     $end            reduce using rule 4 (var_assign -> VAR EQU expression .)
-    POW             shift and go to state 9
-    MUL             shift and go to state 10
-    DIV             shift and go to state 11
-    SUB             shift and go to state 12
-    ADD             shift and go to state 13
-    GREATER         shift and go to state 14
-    GREATEREQU      shift and go to state 15
-    LESS            shift and go to state 16
-    LESSEUQ         shift and go to state 17
-    EQUEQU          shift and go to state 18
-    NOTEQU          shift and go to state 19
+    POW             shift and go to state 11
+    MUL             shift and go to state 12
+    DIV             shift and go to state 13
+    SUB             shift and go to state 14
+    ADD             shift and go to state 15
+    GREATER         shift and go to state 16
+    GREATEREQU      shift and go to state 17
+    LESS            shift and go to state 18
+    LESSEUQ         shift and go to state 19
+    EQUEQU          shift and go to state 20
+    NOTEQU          shift and go to state 21
+
+
+state 37
+
+    (20) parentheses -> LPAREN expression RPAREN .
+
+    POW             reduce using rule 20 (parentheses -> LPAREN expression RPAREN .)
+    MUL             reduce using rule 20 (parentheses -> LPAREN expression RPAREN .)
+    DIV             reduce using rule 20 (parentheses -> LPAREN expression RPAREN .)
+    SUB             reduce using rule 20 (parentheses -> LPAREN expression RPAREN .)
+    ADD             reduce using rule 20 (parentheses -> LPAREN expression RPAREN .)
+    GREATER         reduce using rule 20 (parentheses -> LPAREN expression RPAREN .)
+    GREATEREQU      reduce using rule 20 (parentheses -> LPAREN expression RPAREN .)
+    LESS            reduce using rule 20 (parentheses -> LPAREN expression RPAREN .)
+    LESSEUQ         reduce using rule 20 (parentheses -> LPAREN expression RPAREN .)
+    EQUEQU          reduce using rule 20 (parentheses -> LPAREN expression RPAREN .)
+    NOTEQU          reduce using rule 20 (parentheses -> LPAREN expression RPAREN .)
+    $end            reduce using rule 20 (parentheses -> LPAREN expression RPAREN .)
+    RPAREN          reduce using rule 20 (parentheses -> LPAREN expression RPAREN .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for POW in state 21 resolved as shift
-WARNING: shift/reduce conflict for MUL in state 21 resolved as shift
-WARNING: shift/reduce conflict for DIV in state 21 resolved as shift
-WARNING: shift/reduce conflict for SUB in state 21 resolved as shift
-WARNING: shift/reduce conflict for ADD in state 21 resolved as shift
-WARNING: shift/reduce conflict for GREATER in state 21 resolved as shift
-WARNING: shift/reduce conflict for GREATEREQU in state 21 resolved as shift
-WARNING: shift/reduce conflict for LESS in state 21 resolved as shift
-WARNING: shift/reduce conflict for LESSEUQ in state 21 resolved as shift
-WARNING: shift/reduce conflict for EQUEQU in state 21 resolved as shift
-WARNING: shift/reduce conflict for NOTEQU in state 21 resolved as shift
-WARNING: shift/reduce conflict for POW in state 23 resolved as shift
-WARNING: shift/reduce conflict for MUL in state 23 resolved as shift
-WARNING: shift/reduce conflict for DIV in state 23 resolved as shift
-WARNING: shift/reduce conflict for SUB in state 23 resolved as shift
-WARNING: shift/reduce conflict for ADD in state 23 resolved as shift
-WARNING: shift/reduce conflict for GREATER in state 23 resolved as shift
-WARNING: shift/reduce conflict for GREATEREQU in state 23 resolved as shift
-WARNING: shift/reduce conflict for LESS in state 23 resolved as shift
-WARNING: shift/reduce conflict for LESSEUQ in state 23 resolved as shift
-WARNING: shift/reduce conflict for EQUEQU in state 23 resolved as shift
-WARNING: shift/reduce conflict for NOTEQU in state 23 resolved as shift
-WARNING: shift/reduce conflict for POW in state 24 resolved as shift
-WARNING: shift/reduce conflict for MUL in state 24 resolved as shift
-WARNING: shift/reduce conflict for DIV in state 24 resolved as shift
-WARNING: shift/reduce conflict for SUB in state 24 resolved as shift
-WARNING: shift/reduce conflict for ADD in state 24 resolved as shift
-WARNING: shift/reduce conflict for GREATER in state 24 resolved as shift
-WARNING: shift/reduce conflict for GREATEREQU in state 24 resolved as shift
-WARNING: shift/reduce conflict for LESS in state 24 resolved as shift
-WARNING: shift/reduce conflict for LESSEUQ in state 24 resolved as shift
-WARNING: shift/reduce conflict for EQUEQU in state 24 resolved as shift
-WARNING: shift/reduce conflict for NOTEQU in state 24 resolved as shift
 WARNING: shift/reduce conflict for POW in state 25 resolved as shift
 WARNING: shift/reduce conflict for MUL in state 25 resolved as shift
 WARNING: shift/reduce conflict for DIV in state 25 resolved as shift
@@ -1274,3 +1406,36 @@ WARNING: shift/reduce conflict for LESS in state 32 resolved as shift
 WARNING: shift/reduce conflict for LESSEUQ in state 32 resolved as shift
 WARNING: shift/reduce conflict for EQUEQU in state 32 resolved as shift
 WARNING: shift/reduce conflict for NOTEQU in state 32 resolved as shift
+WARNING: shift/reduce conflict for POW in state 33 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 33 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 33 resolved as shift
+WARNING: shift/reduce conflict for SUB in state 33 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 33 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 33 resolved as shift
+WARNING: shift/reduce conflict for GREATEREQU in state 33 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 33 resolved as shift
+WARNING: shift/reduce conflict for LESSEUQ in state 33 resolved as shift
+WARNING: shift/reduce conflict for EQUEQU in state 33 resolved as shift
+WARNING: shift/reduce conflict for NOTEQU in state 33 resolved as shift
+WARNING: shift/reduce conflict for POW in state 34 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 34 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 34 resolved as shift
+WARNING: shift/reduce conflict for SUB in state 34 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 34 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 34 resolved as shift
+WARNING: shift/reduce conflict for GREATEREQU in state 34 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 34 resolved as shift
+WARNING: shift/reduce conflict for LESSEUQ in state 34 resolved as shift
+WARNING: shift/reduce conflict for EQUEQU in state 34 resolved as shift
+WARNING: shift/reduce conflict for NOTEQU in state 34 resolved as shift
+WARNING: shift/reduce conflict for POW in state 35 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 35 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 35 resolved as shift
+WARNING: shift/reduce conflict for SUB in state 35 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 35 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 35 resolved as shift
+WARNING: shift/reduce conflict for GREATEREQU in state 35 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 35 resolved as shift
+WARNING: shift/reduce conflict for LESSEUQ in state 35 resolved as shift
+WARNING: shift/reduce conflict for EQUEQU in state 35 resolved as shift
+WARNING: shift/reduce conflict for NOTEQU in state 35 resolved as shift

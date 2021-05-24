@@ -37,10 +37,17 @@ def p_expression(p):
 def p_expression_int_float_sci(p):
     '''
     expression : INT
-                | FLOAT
-                | SCI
+               | FLOAT
+               | SCI
+               | parentheses
     '''
     p[0] = p[1]
+
+def p_parentheses(p):
+    '''
+    parentheses : LPAREN expression RPAREN
+    '''
+    p[0] = (p[1], p[2], p[3])
 
 def p_expression_var(p):
     '''
@@ -63,11 +70,12 @@ def saveTofile(p):
     for item in range( len(p) ):
         outString += str(p[item])
     print( '(' + outString + ')')
+
 # main
 parser = yacc.yacc()
 path = os.getcwd()
 
-itemList = ["23+8", "25*0", "5NUM^ 3.0","x=5","10*x","x =y","x!=5"]
+itemList = ["23+8", "25*0", "5NUM^ 3.0","x=5","10*x","x =y","x!=5", "x=(5+9"]
 
 for line in range( len(itemList)):
     try:
