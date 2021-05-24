@@ -113,6 +113,7 @@ fin = open(os.getcwd() + "/q1/61090041.tok", 'w')
 inputList = body
 
 lexer = lex.lex()
+
 for item in inputList:
     item = item.replace(" ","")
     lexer.input(item)

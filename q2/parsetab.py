@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ADD DIV EQU EQUEQU FLOAT GREATER GREATEREQU INT INTDIV LESS LESSEUQ LPAREN MUL NOTEQU POW RPAREN SCI SUB VAR\n    calc : expression\n        | empty\n    \n    expression : INT\n                | FLOAT\n    \n    empty :\n    '
+_lr_signature = 'ADD DIV EQU EQUEQU FLOAT GREATER GREATEREQU INT INTDIV LESS LESSEUQ LPAREN MUL NOTEQU POW RPAREN SCI SUB VAR\n    calc : expression\n         | var_assign\n         | empty\n    \n    var_assign : VAR EQU expression\n    \n    expression : expression POW expression\n               | expression MUL expression\n               | expression DIV expression\n               | expression SUB expression\n               | expression ADD expression\n               | expression GREATER expression\n               | expression GREATEREQU expression\n               | expression LESS expression\n               | expression LESSEUQ expression\n               | expression EQUEQU expression\n               | expression NOTEQU expression\n    \n    expression : INT\n                | FLOAT\n                | SCI\n    \n    expression : VAR\n    \n    empty :\n    '
     
-_lr_action_items = {'INT':([0,],[4,]),'FLOAT':([0,],[5,]),'$end':([0,1,2,3,4,5,],[-5,0,-1,-2,-3,-4,]),}
+_lr_action_items = {'INT':([0,9,10,11,12,13,14,15,16,17,18,19,20,],[5,5,5,5,5,5,5,5,5,5,5,5,5,]),'FLOAT':([0,9,10,11,12,13,14,15,16,17,18,19,20,],[6,6,6,6,6,6,6,6,6,6,6,6,6,]),'SCI':([0,9,10,11,12,13,14,15,16,17,18,19,20,],[7,7,7,7,7,7,7,7,7,7,7,7,7,]),'VAR':([0,9,10,11,12,13,14,15,16,17,18,19,20,],[8,22,22,22,22,22,22,22,22,22,22,22,22,]),'$end':([0,1,2,3,4,5,6,7,8,21,22,23,24,25,26,27,28,29,30,31,32,33,],[-20,0,-1,-2,-3,-16,-17,-18,-19,-5,-19,-6,-7,-8,-9,-10,-11,-12,-13,-14,-15,-4,]),'POW':([2,5,6,7,8,21,22,23,24,25,26,27,28,29,30,31,32,33,],[9,-16,-17,-18,-19,9,-19,9,9,9,9,9,9,9,9,9,9,9,]),'MUL':([2,5,6,7,8,21,22,23,24,25,26,27,28,29,30,31,32,33,],[10,-16,-17,-18,-19,10,-19,10,10,10,10,10,10,10,10,10,10,10,]),'DIV':([2,5,6,7,8,21,22,23,24,25,26,27,28,29,30,31,32,33,],[11,-16,-17,-18,-19,11,-19,11,11,11,11,11,11,11,11,11,11,11,]),'SUB':([2,5,6,7,8,21,22,23,24,25,26,27,28,29,30,31,32,33,],[12,-16,-17,-18,-19,12,-19,12,12,12,12,12,12,12,12,12,12,12,]),'ADD':([2,5,6,7,8,21,22,23,24,25,26,27,28,29,30,31,32,33,],[13,-16,-17,-18,-19,13,-19,13,13,13,13,13,13,13,13,13,13,13,]),'GREATER':([2,5,6,7,8,21,22,23,24,25,26,27,28,29,30,31,32,33,],[14,-16,-17,-18,-19,14,-19,14,14,14,14,14,14,14,14,14,14,14,]),'GREATEREQU':([2,5,6,7,8,21,22,23,24,25,26,27,28,29,30,31,32,33,],[15,-16,-17,-18,-19,15,-19,15,15,15,15,15,15,15,15,15,15,15,]),'LESS':([2,5,6,7,8,21,22,23,24,25,26,27,28,29,30,31,32,33,],[16,-16,-17,-18,-19,16,-19,16,16,16,16,16,16,16,16,16,16,16,]),'LESSEUQ':([2,5,6,7,8,21,22,23,24,25,26,27,28,29,30,31,32,33,],[17,-16,-17,-18,-19,17,-19,17,17,17,17,17,17,17,17,17,17,17,]),'EQUEQU':([2,5,6,7,8,21,22,23,24,25,26,27,28,29,30,31,32,33,],[18,-16,-17,-18,-19,18,-19,18,18,18,18,18,18,18,18,18,18,18,]),'NOTEQU':([2,5,6,7,8,21,22,23,24,25,26,27,28,29,30,31,32,33,],[19,-16,-17,-18,-19,19,-19,19,19,19,19,19,19,19,19,19,19,19,]),'EQU':([8,],[20,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'calc':([0,],[1,]),'expression':([0,],[2,]),'empty':([0,],[3,]),}
+_lr_goto_items = {'calc':([0,],[1,]),'expression':([0,9,10,11,12,13,14,15,16,17,18,19,20,],[2,21,23,24,25,26,27,28,29,30,31,32,33,]),'var_assign':([0,],[3,]),'empty':([0,],[4,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -28,8 +28,23 @@ del _lr_goto_items
 _lr_productions = [
   ("S' -> calc","S'",1,None,None,None),
   ('calc -> expression','calc',1,'p_calc',' syntacticanalyzer.py',9),
-  ('calc -> empty','calc',1,'p_calc',' syntacticanalyzer.py',10),
-  ('expression -> INT','expression',1,'p_expression',' syntacticanalyzer.py',16),
-  ('expression -> FLOAT','expression',1,'p_expression',' syntacticanalyzer.py',17),
-  ('empty -> <empty>','empty',0,'p_empty',' syntacticanalyzer.py',23),
+  ('calc -> var_assign','calc',1,'p_calc',' syntacticanalyzer.py',10),
+  ('calc -> empty','calc',1,'p_calc',' syntacticanalyzer.py',11),
+  ('var_assign -> VAR EQU expression','var_assign',3,'p_var_assign',' syntacticanalyzer.py',17),
+  ('expression -> expression POW expression','expression',3,'p_expression',' syntacticanalyzer.py',23),
+  ('expression -> expression MUL expression','expression',3,'p_expression',' syntacticanalyzer.py',24),
+  ('expression -> expression DIV expression','expression',3,'p_expression',' syntacticanalyzer.py',25),
+  ('expression -> expression SUB expression','expression',3,'p_expression',' syntacticanalyzer.py',26),
+  ('expression -> expression ADD expression','expression',3,'p_expression',' syntacticanalyzer.py',27),
+  ('expression -> expression GREATER expression','expression',3,'p_expression',' syntacticanalyzer.py',28),
+  ('expression -> expression GREATEREQU expression','expression',3,'p_expression',' syntacticanalyzer.py',29),
+  ('expression -> expression LESS expression','expression',3,'p_expression',' syntacticanalyzer.py',30),
+  ('expression -> expression LESSEUQ expression','expression',3,'p_expression',' syntacticanalyzer.py',31),
+  ('expression -> expression EQUEQU expression','expression',3,'p_expression',' syntacticanalyzer.py',32),
+  ('expression -> expression NOTEQU expression','expression',3,'p_expression',' syntacticanalyzer.py',33),
+  ('expression -> INT','expression',1,'p_expression_int_float_sci',' syntacticanalyzer.py',39),
+  ('expression -> FLOAT','expression',1,'p_expression_int_float_sci',' syntacticanalyzer.py',40),
+  ('expression -> SCI','expression',1,'p_expression_int_float_sci',' syntacticanalyzer.py',41),
+  ('expression -> VAR','expression',1,'p_expression_var',' syntacticanalyzer.py',47),
+  ('empty -> <empty>','empty',0,'p_empty',' syntacticanalyzer.py',56),
 ]

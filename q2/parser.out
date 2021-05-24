@@ -2,61 +2,63 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    ADD
-    DIV
-    EQU
-    EQUEQU
-    GREATER
-    GREATEREQU
     INTDIV
-    LESS
-    LESSEUQ
     LPAREN
-    MUL
-    NOTEQU
-    POW
     RPAREN
-    SCI
-    SUB
-    VAR
 
 Grammar
 
 Rule 0     S' -> calc
 Rule 1     calc -> expression
-Rule 2     calc -> empty
-Rule 3     expression -> INT
-Rule 4     expression -> FLOAT
-Rule 5     empty -> <empty>
+Rule 2     calc -> var_assign
+Rule 3     calc -> empty
+Rule 4     var_assign -> VAR EQU expression
+Rule 5     expression -> expression POW expression
+Rule 6     expression -> expression MUL expression
+Rule 7     expression -> expression DIV expression
+Rule 8     expression -> expression SUB expression
+Rule 9     expression -> expression ADD expression
+Rule 10    expression -> expression GREATER expression
+Rule 11    expression -> expression GREATEREQU expression
+Rule 12    expression -> expression LESS expression
+Rule 13    expression -> expression LESSEUQ expression
+Rule 14    expression -> expression EQUEQU expression
+Rule 15    expression -> expression NOTEQU expression
+Rule 16    expression -> INT
+Rule 17    expression -> FLOAT
+Rule 18    expression -> SCI
+Rule 19    expression -> VAR
+Rule 20    empty -> <empty>
 
 Terminals, with rules where they appear
 
-ADD                  : 
-DIV                  : 
-EQU                  : 
-EQUEQU               : 
-FLOAT                : 4
-GREATER              : 
-GREATEREQU           : 
-INT                  : 3
+ADD                  : 9
+DIV                  : 7
+EQU                  : 4
+EQUEQU               : 14
+FLOAT                : 17
+GREATER              : 10
+GREATEREQU           : 11
+INT                  : 16
 INTDIV               : 
-LESS                 : 
-LESSEUQ              : 
+LESS                 : 12
+LESSEUQ              : 13
 LPAREN               : 
-MUL                  : 
-NOTEQU               : 
-POW                  : 
+MUL                  : 6
+NOTEQU               : 15
+POW                  : 5
 RPAREN               : 
-SCI                  : 
-SUB                  : 
-VAR                  : 
+SCI                  : 18
+SUB                  : 8
+VAR                  : 4 19
 error                : 
 
 Nonterminals, with rules where they appear
 
 calc                 : 0
-empty                : 2
-expression           : 1
+empty                : 3
+expression           : 1 4 5 5 6 6 7 7 8 8 9 9 10 10 11 11 12 12 13 13 14 14 15 15
+var_assign           : 2
 
 Parsing method: LALR
 
@@ -64,18 +66,36 @@ state 0
 
     (0) S' -> . calc
     (1) calc -> . expression
-    (2) calc -> . empty
-    (3) expression -> . INT
-    (4) expression -> . FLOAT
-    (5) empty -> .
+    (2) calc -> . var_assign
+    (3) calc -> . empty
+    (5) expression -> . expression POW expression
+    (6) expression -> . expression MUL expression
+    (7) expression -> . expression DIV expression
+    (8) expression -> . expression SUB expression
+    (9) expression -> . expression ADD expression
+    (10) expression -> . expression GREATER expression
+    (11) expression -> . expression GREATEREQU expression
+    (12) expression -> . expression LESS expression
+    (13) expression -> . expression LESSEUQ expression
+    (14) expression -> . expression EQUEQU expression
+    (15) expression -> . expression NOTEQU expression
+    (16) expression -> . INT
+    (17) expression -> . FLOAT
+    (18) expression -> . SCI
+    (19) expression -> . VAR
+    (4) var_assign -> . VAR EQU expression
+    (20) empty -> .
 
-    INT             shift and go to state 4
-    FLOAT           shift and go to state 5
-    $end            reduce using rule 5 (empty -> .)
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    SCI             shift and go to state 7
+    VAR             shift and go to state 8
+    $end            reduce using rule 20 (empty -> .)
 
     calc                           shift and go to state 1
     expression                     shift and go to state 2
-    empty                          shift and go to state 3
+    var_assign                     shift and go to state 3
+    empty                          shift and go to state 4
 
 state 1
 
@@ -86,27 +106,1171 @@ state 1
 state 2
 
     (1) calc -> expression .
+    (5) expression -> expression . POW expression
+    (6) expression -> expression . MUL expression
+    (7) expression -> expression . DIV expression
+    (8) expression -> expression . SUB expression
+    (9) expression -> expression . ADD expression
+    (10) expression -> expression . GREATER expression
+    (11) expression -> expression . GREATEREQU expression
+    (12) expression -> expression . LESS expression
+    (13) expression -> expression . LESSEUQ expression
+    (14) expression -> expression . EQUEQU expression
+    (15) expression -> expression . NOTEQU expression
 
     $end            reduce using rule 1 (calc -> expression .)
+    POW             shift and go to state 9
+    MUL             shift and go to state 10
+    DIV             shift and go to state 11
+    SUB             shift and go to state 12
+    ADD             shift and go to state 13
+    GREATER         shift and go to state 14
+    GREATEREQU      shift and go to state 15
+    LESS            shift and go to state 16
+    LESSEUQ         shift and go to state 17
+    EQUEQU          shift and go to state 18
+    NOTEQU          shift and go to state 19
 
 
 state 3
 
-    (2) calc -> empty .
+    (2) calc -> var_assign .
 
-    $end            reduce using rule 2 (calc -> empty .)
+    $end            reduce using rule 2 (calc -> var_assign .)
 
 
 state 4
 
-    (3) expression -> INT .
+    (3) calc -> empty .
 
-    $end            reduce using rule 3 (expression -> INT .)
+    $end            reduce using rule 3 (calc -> empty .)
 
 
 state 5
 
-    (4) expression -> FLOAT .
+    (16) expression -> INT .
 
-    $end            reduce using rule 4 (expression -> FLOAT .)
+    POW             reduce using rule 16 (expression -> INT .)
+    MUL             reduce using rule 16 (expression -> INT .)
+    DIV             reduce using rule 16 (expression -> INT .)
+    SUB             reduce using rule 16 (expression -> INT .)
+    ADD             reduce using rule 16 (expression -> INT .)
+    GREATER         reduce using rule 16 (expression -> INT .)
+    GREATEREQU      reduce using rule 16 (expression -> INT .)
+    LESS            reduce using rule 16 (expression -> INT .)
+    LESSEUQ         reduce using rule 16 (expression -> INT .)
+    EQUEQU          reduce using rule 16 (expression -> INT .)
+    NOTEQU          reduce using rule 16 (expression -> INT .)
+    $end            reduce using rule 16 (expression -> INT .)
 
+
+state 6
+
+    (17) expression -> FLOAT .
+
+    POW             reduce using rule 17 (expression -> FLOAT .)
+    MUL             reduce using rule 17 (expression -> FLOAT .)
+    DIV             reduce using rule 17 (expression -> FLOAT .)
+    SUB             reduce using rule 17 (expression -> FLOAT .)
+    ADD             reduce using rule 17 (expression -> FLOAT .)
+    GREATER         reduce using rule 17 (expression -> FLOAT .)
+    GREATEREQU      reduce using rule 17 (expression -> FLOAT .)
+    LESS            reduce using rule 17 (expression -> FLOAT .)
+    LESSEUQ         reduce using rule 17 (expression -> FLOAT .)
+    EQUEQU          reduce using rule 17 (expression -> FLOAT .)
+    NOTEQU          reduce using rule 17 (expression -> FLOAT .)
+    $end            reduce using rule 17 (expression -> FLOAT .)
+
+
+state 7
+
+    (18) expression -> SCI .
+
+    POW             reduce using rule 18 (expression -> SCI .)
+    MUL             reduce using rule 18 (expression -> SCI .)
+    DIV             reduce using rule 18 (expression -> SCI .)
+    SUB             reduce using rule 18 (expression -> SCI .)
+    ADD             reduce using rule 18 (expression -> SCI .)
+    GREATER         reduce using rule 18 (expression -> SCI .)
+    GREATEREQU      reduce using rule 18 (expression -> SCI .)
+    LESS            reduce using rule 18 (expression -> SCI .)
+    LESSEUQ         reduce using rule 18 (expression -> SCI .)
+    EQUEQU          reduce using rule 18 (expression -> SCI .)
+    NOTEQU          reduce using rule 18 (expression -> SCI .)
+    $end            reduce using rule 18 (expression -> SCI .)
+
+
+state 8
+
+    (19) expression -> VAR .
+    (4) var_assign -> VAR . EQU expression
+
+    POW             reduce using rule 19 (expression -> VAR .)
+    MUL             reduce using rule 19 (expression -> VAR .)
+    DIV             reduce using rule 19 (expression -> VAR .)
+    SUB             reduce using rule 19 (expression -> VAR .)
+    ADD             reduce using rule 19 (expression -> VAR .)
+    GREATER         reduce using rule 19 (expression -> VAR .)
+    GREATEREQU      reduce using rule 19 (expression -> VAR .)
+    LESS            reduce using rule 19 (expression -> VAR .)
+    LESSEUQ         reduce using rule 19 (expression -> VAR .)
+    EQUEQU          reduce using rule 19 (expression -> VAR .)
+    NOTEQU          reduce using rule 19 (expression -> VAR .)
+    $end            reduce using rule 19 (expression -> VAR .)
+    EQU             shift and go to state 20
+
+
+state 9
+
+    (5) expression -> expression POW . expression
+    (5) expression -> . expression POW expression
+    (6) expression -> . expression MUL expression
+    (7) expression -> . expression DIV expression
+    (8) expression -> . expression SUB expression
+    (9) expression -> . expression ADD expression
+    (10) expression -> . expression GREATER expression
+    (11) expression -> . expression GREATEREQU expression
+    (12) expression -> . expression LESS expression
+    (13) expression -> . expression LESSEUQ expression
+    (14) expression -> . expression EQUEQU expression
+    (15) expression -> . expression NOTEQU expression
+    (16) expression -> . INT
+    (17) expression -> . FLOAT
+    (18) expression -> . SCI
+    (19) expression -> . VAR
+
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    SCI             shift and go to state 7
+    VAR             shift and go to state 22
+
+    expression                     shift and go to state 21
+
+state 10
+
+    (6) expression -> expression MUL . expression
+    (5) expression -> . expression POW expression
+    (6) expression -> . expression MUL expression
+    (7) expression -> . expression DIV expression
+    (8) expression -> . expression SUB expression
+    (9) expression -> . expression ADD expression
+    (10) expression -> . expression GREATER expression
+    (11) expression -> . expression GREATEREQU expression
+    (12) expression -> . expression LESS expression
+    (13) expression -> . expression LESSEUQ expression
+    (14) expression -> . expression EQUEQU expression
+    (15) expression -> . expression NOTEQU expression
+    (16) expression -> . INT
+    (17) expression -> . FLOAT
+    (18) expression -> . SCI
+    (19) expression -> . VAR
+
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    SCI             shift and go to state 7
+    VAR             shift and go to state 22
+
+    expression                     shift and go to state 23
+
+state 11
+
+    (7) expression -> expression DIV . expression
+    (5) expression -> . expression POW expression
+    (6) expression -> . expression MUL expression
+    (7) expression -> . expression DIV expression
+    (8) expression -> . expression SUB expression
+    (9) expression -> . expression ADD expression
+    (10) expression -> . expression GREATER expression
+    (11) expression -> . expression GREATEREQU expression
+    (12) expression -> . expression LESS expression
+    (13) expression -> . expression LESSEUQ expression
+    (14) expression -> . expression EQUEQU expression
+    (15) expression -> . expression NOTEQU expression
+    (16) expression -> . INT
+    (17) expression -> . FLOAT
+    (18) expression -> . SCI
+    (19) expression -> . VAR
+
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    SCI             shift and go to state 7
+    VAR             shift and go to state 22
+
+    expression                     shift and go to state 24
+
+state 12
+
+    (8) expression -> expression SUB . expression
+    (5) expression -> . expression POW expression
+    (6) expression -> . expression MUL expression
+    (7) expression -> . expression DIV expression
+    (8) expression -> . expression SUB expression
+    (9) expression -> . expression ADD expression
+    (10) expression -> . expression GREATER expression
+    (11) expression -> . expression GREATEREQU expression
+    (12) expression -> . expression LESS expression
+    (13) expression -> . expression LESSEUQ expression
+    (14) expression -> . expression EQUEQU expression
+    (15) expression -> . expression NOTEQU expression
+    (16) expression -> . INT
+    (17) expression -> . FLOAT
+    (18) expression -> . SCI
+    (19) expression -> . VAR
+
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    SCI             shift and go to state 7
+    VAR             shift and go to state 22
+
+    expression                     shift and go to state 25
+
+state 13
+
+    (9) expression -> expression ADD . expression
+    (5) expression -> . expression POW expression
+    (6) expression -> . expression MUL expression
+    (7) expression -> . expression DIV expression
+    (8) expression -> . expression SUB expression
+    (9) expression -> . expression ADD expression
+    (10) expression -> . expression GREATER expression
+    (11) expression -> . expression GREATEREQU expression
+    (12) expression -> . expression LESS expression
+    (13) expression -> . expression LESSEUQ expression
+    (14) expression -> . expression EQUEQU expression
+    (15) expression -> . expression NOTEQU expression
+    (16) expression -> . INT
+    (17) expression -> . FLOAT
+    (18) expression -> . SCI
+    (19) expression -> . VAR
+
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    SCI             shift and go to state 7
+    VAR             shift and go to state 22
+
+    expression                     shift and go to state 26
+
+state 14
+
+    (10) expression -> expression GREATER . expression
+    (5) expression -> . expression POW expression
+    (6) expression -> . expression MUL expression
+    (7) expression -> . expression DIV expression
+    (8) expression -> . expression SUB expression
+    (9) expression -> . expression ADD expression
+    (10) expression -> . expression GREATER expression
+    (11) expression -> . expression GREATEREQU expression
+    (12) expression -> . expression LESS expression
+    (13) expression -> . expression LESSEUQ expression
+    (14) expression -> . expression EQUEQU expression
+    (15) expression -> . expression NOTEQU expression
+    (16) expression -> . INT
+    (17) expression -> . FLOAT
+    (18) expression -> . SCI
+    (19) expression -> . VAR
+
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    SCI             shift and go to state 7
+    VAR             shift and go to state 22
+
+    expression                     shift and go to state 27
+
+state 15
+
+    (11) expression -> expression GREATEREQU . expression
+    (5) expression -> . expression POW expression
+    (6) expression -> . expression MUL expression
+    (7) expression -> . expression DIV expression
+    (8) expression -> . expression SUB expression
+    (9) expression -> . expression ADD expression
+    (10) expression -> . expression GREATER expression
+    (11) expression -> . expression GREATEREQU expression
+    (12) expression -> . expression LESS expression
+    (13) expression -> . expression LESSEUQ expression
+    (14) expression -> . expression EQUEQU expression
+    (15) expression -> . expression NOTEQU expression
+    (16) expression -> . INT
+    (17) expression -> . FLOAT
+    (18) expression -> . SCI
+    (19) expression -> . VAR
+
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    SCI             shift and go to state 7
+    VAR             shift and go to state 22
+
+    expression                     shift and go to state 28
+
+state 16
+
+    (12) expression -> expression LESS . expression
+    (5) expression -> . expression POW expression
+    (6) expression -> . expression MUL expression
+    (7) expression -> . expression DIV expression
+    (8) expression -> . expression SUB expression
+    (9) expression -> . expression ADD expression
+    (10) expression -> . expression GREATER expression
+    (11) expression -> . expression GREATEREQU expression
+    (12) expression -> . expression LESS expression
+    (13) expression -> . expression LESSEUQ expression
+    (14) expression -> . expression EQUEQU expression
+    (15) expression -> . expression NOTEQU expression
+    (16) expression -> . INT
+    (17) expression -> . FLOAT
+    (18) expression -> . SCI
+    (19) expression -> . VAR
+
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    SCI             shift and go to state 7
+    VAR             shift and go to state 22
+
+    expression                     shift and go to state 29
+
+state 17
+
+    (13) expression -> expression LESSEUQ . expression
+    (5) expression -> . expression POW expression
+    (6) expression -> . expression MUL expression
+    (7) expression -> . expression DIV expression
+    (8) expression -> . expression SUB expression
+    (9) expression -> . expression ADD expression
+    (10) expression -> . expression GREATER expression
+    (11) expression -> . expression GREATEREQU expression
+    (12) expression -> . expression LESS expression
+    (13) expression -> . expression LESSEUQ expression
+    (14) expression -> . expression EQUEQU expression
+    (15) expression -> . expression NOTEQU expression
+    (16) expression -> . INT
+    (17) expression -> . FLOAT
+    (18) expression -> . SCI
+    (19) expression -> . VAR
+
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    SCI             shift and go to state 7
+    VAR             shift and go to state 22
+
+    expression                     shift and go to state 30
+
+state 18
+
+    (14) expression -> expression EQUEQU . expression
+    (5) expression -> . expression POW expression
+    (6) expression -> . expression MUL expression
+    (7) expression -> . expression DIV expression
+    (8) expression -> . expression SUB expression
+    (9) expression -> . expression ADD expression
+    (10) expression -> . expression GREATER expression
+    (11) expression -> . expression GREATEREQU expression
+    (12) expression -> . expression LESS expression
+    (13) expression -> . expression LESSEUQ expression
+    (14) expression -> . expression EQUEQU expression
+    (15) expression -> . expression NOTEQU expression
+    (16) expression -> . INT
+    (17) expression -> . FLOAT
+    (18) expression -> . SCI
+    (19) expression -> . VAR
+
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    SCI             shift and go to state 7
+    VAR             shift and go to state 22
+
+    expression                     shift and go to state 31
+
+state 19
+
+    (15) expression -> expression NOTEQU . expression
+    (5) expression -> . expression POW expression
+    (6) expression -> . expression MUL expression
+    (7) expression -> . expression DIV expression
+    (8) expression -> . expression SUB expression
+    (9) expression -> . expression ADD expression
+    (10) expression -> . expression GREATER expression
+    (11) expression -> . expression GREATEREQU expression
+    (12) expression -> . expression LESS expression
+    (13) expression -> . expression LESSEUQ expression
+    (14) expression -> . expression EQUEQU expression
+    (15) expression -> . expression NOTEQU expression
+    (16) expression -> . INT
+    (17) expression -> . FLOAT
+    (18) expression -> . SCI
+    (19) expression -> . VAR
+
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    SCI             shift and go to state 7
+    VAR             shift and go to state 22
+
+    expression                     shift and go to state 32
+
+state 20
+
+    (4) var_assign -> VAR EQU . expression
+    (5) expression -> . expression POW expression
+    (6) expression -> . expression MUL expression
+    (7) expression -> . expression DIV expression
+    (8) expression -> . expression SUB expression
+    (9) expression -> . expression ADD expression
+    (10) expression -> . expression GREATER expression
+    (11) expression -> . expression GREATEREQU expression
+    (12) expression -> . expression LESS expression
+    (13) expression -> . expression LESSEUQ expression
+    (14) expression -> . expression EQUEQU expression
+    (15) expression -> . expression NOTEQU expression
+    (16) expression -> . INT
+    (17) expression -> . FLOAT
+    (18) expression -> . SCI
+    (19) expression -> . VAR
+
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    SCI             shift and go to state 7
+    VAR             shift and go to state 22
+
+    expression                     shift and go to state 33
+
+state 21
+
+    (5) expression -> expression POW expression .
+    (5) expression -> expression . POW expression
+    (6) expression -> expression . MUL expression
+    (7) expression -> expression . DIV expression
+    (8) expression -> expression . SUB expression
+    (9) expression -> expression . ADD expression
+    (10) expression -> expression . GREATER expression
+    (11) expression -> expression . GREATEREQU expression
+    (12) expression -> expression . LESS expression
+    (13) expression -> expression . LESSEUQ expression
+    (14) expression -> expression . EQUEQU expression
+    (15) expression -> expression . NOTEQU expression
+
+  ! shift/reduce conflict for POW resolved as shift
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+  ! shift/reduce conflict for SUB resolved as shift
+  ! shift/reduce conflict for ADD resolved as shift
+  ! shift/reduce conflict for GREATER resolved as shift
+  ! shift/reduce conflict for GREATEREQU resolved as shift
+  ! shift/reduce conflict for LESS resolved as shift
+  ! shift/reduce conflict for LESSEUQ resolved as shift
+  ! shift/reduce conflict for EQUEQU resolved as shift
+  ! shift/reduce conflict for NOTEQU resolved as shift
+    $end            reduce using rule 5 (expression -> expression POW expression .)
+    POW             shift and go to state 9
+    MUL             shift and go to state 10
+    DIV             shift and go to state 11
+    SUB             shift and go to state 12
+    ADD             shift and go to state 13
+    GREATER         shift and go to state 14
+    GREATEREQU      shift and go to state 15
+    LESS            shift and go to state 16
+    LESSEUQ         shift and go to state 17
+    EQUEQU          shift and go to state 18
+    NOTEQU          shift and go to state 19
+
+  ! POW             [ reduce using rule 5 (expression -> expression POW expression .) ]
+  ! MUL             [ reduce using rule 5 (expression -> expression POW expression .) ]
+  ! DIV             [ reduce using rule 5 (expression -> expression POW expression .) ]
+  ! SUB             [ reduce using rule 5 (expression -> expression POW expression .) ]
+  ! ADD             [ reduce using rule 5 (expression -> expression POW expression .) ]
+  ! GREATER         [ reduce using rule 5 (expression -> expression POW expression .) ]
+  ! GREATEREQU      [ reduce using rule 5 (expression -> expression POW expression .) ]
+  ! LESS            [ reduce using rule 5 (expression -> expression POW expression .) ]
+  ! LESSEUQ         [ reduce using rule 5 (expression -> expression POW expression .) ]
+  ! EQUEQU          [ reduce using rule 5 (expression -> expression POW expression .) ]
+  ! NOTEQU          [ reduce using rule 5 (expression -> expression POW expression .) ]
+
+
+state 22
+
+    (19) expression -> VAR .
+
+    POW             reduce using rule 19 (expression -> VAR .)
+    MUL             reduce using rule 19 (expression -> VAR .)
+    DIV             reduce using rule 19 (expression -> VAR .)
+    SUB             reduce using rule 19 (expression -> VAR .)
+    ADD             reduce using rule 19 (expression -> VAR .)
+    GREATER         reduce using rule 19 (expression -> VAR .)
+    GREATEREQU      reduce using rule 19 (expression -> VAR .)
+    LESS            reduce using rule 19 (expression -> VAR .)
+    LESSEUQ         reduce using rule 19 (expression -> VAR .)
+    EQUEQU          reduce using rule 19 (expression -> VAR .)
+    NOTEQU          reduce using rule 19 (expression -> VAR .)
+    $end            reduce using rule 19 (expression -> VAR .)
+
+
+state 23
+
+    (6) expression -> expression MUL expression .
+    (5) expression -> expression . POW expression
+    (6) expression -> expression . MUL expression
+    (7) expression -> expression . DIV expression
+    (8) expression -> expression . SUB expression
+    (9) expression -> expression . ADD expression
+    (10) expression -> expression . GREATER expression
+    (11) expression -> expression . GREATEREQU expression
+    (12) expression -> expression . LESS expression
+    (13) expression -> expression . LESSEUQ expression
+    (14) expression -> expression . EQUEQU expression
+    (15) expression -> expression . NOTEQU expression
+
+  ! shift/reduce conflict for POW resolved as shift
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+  ! shift/reduce conflict for SUB resolved as shift
+  ! shift/reduce conflict for ADD resolved as shift
+  ! shift/reduce conflict for GREATER resolved as shift
+  ! shift/reduce conflict for GREATEREQU resolved as shift
+  ! shift/reduce conflict for LESS resolved as shift
+  ! shift/reduce conflict for LESSEUQ resolved as shift
+  ! shift/reduce conflict for EQUEQU resolved as shift
+  ! shift/reduce conflict for NOTEQU resolved as shift
+    $end            reduce using rule 6 (expression -> expression MUL expression .)
+    POW             shift and go to state 9
+    MUL             shift and go to state 10
+    DIV             shift and go to state 11
+    SUB             shift and go to state 12
+    ADD             shift and go to state 13
+    GREATER         shift and go to state 14
+    GREATEREQU      shift and go to state 15
+    LESS            shift and go to state 16
+    LESSEUQ         shift and go to state 17
+    EQUEQU          shift and go to state 18
+    NOTEQU          shift and go to state 19
+
+  ! POW             [ reduce using rule 6 (expression -> expression MUL expression .) ]
+  ! MUL             [ reduce using rule 6 (expression -> expression MUL expression .) ]
+  ! DIV             [ reduce using rule 6 (expression -> expression MUL expression .) ]
+  ! SUB             [ reduce using rule 6 (expression -> expression MUL expression .) ]
+  ! ADD             [ reduce using rule 6 (expression -> expression MUL expression .) ]
+  ! GREATER         [ reduce using rule 6 (expression -> expression MUL expression .) ]
+  ! GREATEREQU      [ reduce using rule 6 (expression -> expression MUL expression .) ]
+  ! LESS            [ reduce using rule 6 (expression -> expression MUL expression .) ]
+  ! LESSEUQ         [ reduce using rule 6 (expression -> expression MUL expression .) ]
+  ! EQUEQU          [ reduce using rule 6 (expression -> expression MUL expression .) ]
+  ! NOTEQU          [ reduce using rule 6 (expression -> expression MUL expression .) ]
+
+
+state 24
+
+    (7) expression -> expression DIV expression .
+    (5) expression -> expression . POW expression
+    (6) expression -> expression . MUL expression
+    (7) expression -> expression . DIV expression
+    (8) expression -> expression . SUB expression
+    (9) expression -> expression . ADD expression
+    (10) expression -> expression . GREATER expression
+    (11) expression -> expression . GREATEREQU expression
+    (12) expression -> expression . LESS expression
+    (13) expression -> expression . LESSEUQ expression
+    (14) expression -> expression . EQUEQU expression
+    (15) expression -> expression . NOTEQU expression
+
+  ! shift/reduce conflict for POW resolved as shift
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+  ! shift/reduce conflict for SUB resolved as shift
+  ! shift/reduce conflict for ADD resolved as shift
+  ! shift/reduce conflict for GREATER resolved as shift
+  ! shift/reduce conflict for GREATEREQU resolved as shift
+  ! shift/reduce conflict for LESS resolved as shift
+  ! shift/reduce conflict for LESSEUQ resolved as shift
+  ! shift/reduce conflict for EQUEQU resolved as shift
+  ! shift/reduce conflict for NOTEQU resolved as shift
+    $end            reduce using rule 7 (expression -> expression DIV expression .)
+    POW             shift and go to state 9
+    MUL             shift and go to state 10
+    DIV             shift and go to state 11
+    SUB             shift and go to state 12
+    ADD             shift and go to state 13
+    GREATER         shift and go to state 14
+    GREATEREQU      shift and go to state 15
+    LESS            shift and go to state 16
+    LESSEUQ         shift and go to state 17
+    EQUEQU          shift and go to state 18
+    NOTEQU          shift and go to state 19
+
+  ! POW             [ reduce using rule 7 (expression -> expression DIV expression .) ]
+  ! MUL             [ reduce using rule 7 (expression -> expression DIV expression .) ]
+  ! DIV             [ reduce using rule 7 (expression -> expression DIV expression .) ]
+  ! SUB             [ reduce using rule 7 (expression -> expression DIV expression .) ]
+  ! ADD             [ reduce using rule 7 (expression -> expression DIV expression .) ]
+  ! GREATER         [ reduce using rule 7 (expression -> expression DIV expression .) ]
+  ! GREATEREQU      [ reduce using rule 7 (expression -> expression DIV expression .) ]
+  ! LESS            [ reduce using rule 7 (expression -> expression DIV expression .) ]
+  ! LESSEUQ         [ reduce using rule 7 (expression -> expression DIV expression .) ]
+  ! EQUEQU          [ reduce using rule 7 (expression -> expression DIV expression .) ]
+  ! NOTEQU          [ reduce using rule 7 (expression -> expression DIV expression .) ]
+
+
+state 25
+
+    (8) expression -> expression SUB expression .
+    (5) expression -> expression . POW expression
+    (6) expression -> expression . MUL expression
+    (7) expression -> expression . DIV expression
+    (8) expression -> expression . SUB expression
+    (9) expression -> expression . ADD expression
+    (10) expression -> expression . GREATER expression
+    (11) expression -> expression . GREATEREQU expression
+    (12) expression -> expression . LESS expression
+    (13) expression -> expression . LESSEUQ expression
+    (14) expression -> expression . EQUEQU expression
+    (15) expression -> expression . NOTEQU expression
+
+  ! shift/reduce conflict for POW resolved as shift
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+  ! shift/reduce conflict for SUB resolved as shift
+  ! shift/reduce conflict for ADD resolved as shift
+  ! shift/reduce conflict for GREATER resolved as shift
+  ! shift/reduce conflict for GREATEREQU resolved as shift
+  ! shift/reduce conflict for LESS resolved as shift
+  ! shift/reduce conflict for LESSEUQ resolved as shift
+  ! shift/reduce conflict for EQUEQU resolved as shift
+  ! shift/reduce conflict for NOTEQU resolved as shift
+    $end            reduce using rule 8 (expression -> expression SUB expression .)
+    POW             shift and go to state 9
+    MUL             shift and go to state 10
+    DIV             shift and go to state 11
+    SUB             shift and go to state 12
+    ADD             shift and go to state 13
+    GREATER         shift and go to state 14
+    GREATEREQU      shift and go to state 15
+    LESS            shift and go to state 16
+    LESSEUQ         shift and go to state 17
+    EQUEQU          shift and go to state 18
+    NOTEQU          shift and go to state 19
+
+  ! POW             [ reduce using rule 8 (expression -> expression SUB expression .) ]
+  ! MUL             [ reduce using rule 8 (expression -> expression SUB expression .) ]
+  ! DIV             [ reduce using rule 8 (expression -> expression SUB expression .) ]
+  ! SUB             [ reduce using rule 8 (expression -> expression SUB expression .) ]
+  ! ADD             [ reduce using rule 8 (expression -> expression SUB expression .) ]
+  ! GREATER         [ reduce using rule 8 (expression -> expression SUB expression .) ]
+  ! GREATEREQU      [ reduce using rule 8 (expression -> expression SUB expression .) ]
+  ! LESS            [ reduce using rule 8 (expression -> expression SUB expression .) ]
+  ! LESSEUQ         [ reduce using rule 8 (expression -> expression SUB expression .) ]
+  ! EQUEQU          [ reduce using rule 8 (expression -> expression SUB expression .) ]
+  ! NOTEQU          [ reduce using rule 8 (expression -> expression SUB expression .) ]
+
+
+state 26
+
+    (9) expression -> expression ADD expression .
+    (5) expression -> expression . POW expression
+    (6) expression -> expression . MUL expression
+    (7) expression -> expression . DIV expression
+    (8) expression -> expression . SUB expression
+    (9) expression -> expression . ADD expression
+    (10) expression -> expression . GREATER expression
+    (11) expression -> expression . GREATEREQU expression
+    (12) expression -> expression . LESS expression
+    (13) expression -> expression . LESSEUQ expression
+    (14) expression -> expression . EQUEQU expression
+    (15) expression -> expression . NOTEQU expression
+
+  ! shift/reduce conflict for POW resolved as shift
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+  ! shift/reduce conflict for SUB resolved as shift
+  ! shift/reduce conflict for ADD resolved as shift
+  ! shift/reduce conflict for GREATER resolved as shift
+  ! shift/reduce conflict for GREATEREQU resolved as shift
+  ! shift/reduce conflict for LESS resolved as shift
+  ! shift/reduce conflict for LESSEUQ resolved as shift
+  ! shift/reduce conflict for EQUEQU resolved as shift
+  ! shift/reduce conflict for NOTEQU resolved as shift
+    $end            reduce using rule 9 (expression -> expression ADD expression .)
+    POW             shift and go to state 9
+    MUL             shift and go to state 10
+    DIV             shift and go to state 11
+    SUB             shift and go to state 12
+    ADD             shift and go to state 13
+    GREATER         shift and go to state 14
+    GREATEREQU      shift and go to state 15
+    LESS            shift and go to state 16
+    LESSEUQ         shift and go to state 17
+    EQUEQU          shift and go to state 18
+    NOTEQU          shift and go to state 19
+
+  ! POW             [ reduce using rule 9 (expression -> expression ADD expression .) ]
+  ! MUL             [ reduce using rule 9 (expression -> expression ADD expression .) ]
+  ! DIV             [ reduce using rule 9 (expression -> expression ADD expression .) ]
+  ! SUB             [ reduce using rule 9 (expression -> expression ADD expression .) ]
+  ! ADD             [ reduce using rule 9 (expression -> expression ADD expression .) ]
+  ! GREATER         [ reduce using rule 9 (expression -> expression ADD expression .) ]
+  ! GREATEREQU      [ reduce using rule 9 (expression -> expression ADD expression .) ]
+  ! LESS            [ reduce using rule 9 (expression -> expression ADD expression .) ]
+  ! LESSEUQ         [ reduce using rule 9 (expression -> expression ADD expression .) ]
+  ! EQUEQU          [ reduce using rule 9 (expression -> expression ADD expression .) ]
+  ! NOTEQU          [ reduce using rule 9 (expression -> expression ADD expression .) ]
+
+
+state 27
+
+    (10) expression -> expression GREATER expression .
+    (5) expression -> expression . POW expression
+    (6) expression -> expression . MUL expression
+    (7) expression -> expression . DIV expression
+    (8) expression -> expression . SUB expression
+    (9) expression -> expression . ADD expression
+    (10) expression -> expression . GREATER expression
+    (11) expression -> expression . GREATEREQU expression
+    (12) expression -> expression . LESS expression
+    (13) expression -> expression . LESSEUQ expression
+    (14) expression -> expression . EQUEQU expression
+    (15) expression -> expression . NOTEQU expression
+
+  ! shift/reduce conflict for POW resolved as shift
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+  ! shift/reduce conflict for SUB resolved as shift
+  ! shift/reduce conflict for ADD resolved as shift
+  ! shift/reduce conflict for GREATER resolved as shift
+  ! shift/reduce conflict for GREATEREQU resolved as shift
+  ! shift/reduce conflict for LESS resolved as shift
+  ! shift/reduce conflict for LESSEUQ resolved as shift
+  ! shift/reduce conflict for EQUEQU resolved as shift
+  ! shift/reduce conflict for NOTEQU resolved as shift
+    $end            reduce using rule 10 (expression -> expression GREATER expression .)
+    POW             shift and go to state 9
+    MUL             shift and go to state 10
+    DIV             shift and go to state 11
+    SUB             shift and go to state 12
+    ADD             shift and go to state 13
+    GREATER         shift and go to state 14
+    GREATEREQU      shift and go to state 15
+    LESS            shift and go to state 16
+    LESSEUQ         shift and go to state 17
+    EQUEQU          shift and go to state 18
+    NOTEQU          shift and go to state 19
+
+  ! POW             [ reduce using rule 10 (expression -> expression GREATER expression .) ]
+  ! MUL             [ reduce using rule 10 (expression -> expression GREATER expression .) ]
+  ! DIV             [ reduce using rule 10 (expression -> expression GREATER expression .) ]
+  ! SUB             [ reduce using rule 10 (expression -> expression GREATER expression .) ]
+  ! ADD             [ reduce using rule 10 (expression -> expression GREATER expression .) ]
+  ! GREATER         [ reduce using rule 10 (expression -> expression GREATER expression .) ]
+  ! GREATEREQU      [ reduce using rule 10 (expression -> expression GREATER expression .) ]
+  ! LESS            [ reduce using rule 10 (expression -> expression GREATER expression .) ]
+  ! LESSEUQ         [ reduce using rule 10 (expression -> expression GREATER expression .) ]
+  ! EQUEQU          [ reduce using rule 10 (expression -> expression GREATER expression .) ]
+  ! NOTEQU          [ reduce using rule 10 (expression -> expression GREATER expression .) ]
+
+
+state 28
+
+    (11) expression -> expression GREATEREQU expression .
+    (5) expression -> expression . POW expression
+    (6) expression -> expression . MUL expression
+    (7) expression -> expression . DIV expression
+    (8) expression -> expression . SUB expression
+    (9) expression -> expression . ADD expression
+    (10) expression -> expression . GREATER expression
+    (11) expression -> expression . GREATEREQU expression
+    (12) expression -> expression . LESS expression
+    (13) expression -> expression . LESSEUQ expression
+    (14) expression -> expression . EQUEQU expression
+    (15) expression -> expression . NOTEQU expression
+
+  ! shift/reduce conflict for POW resolved as shift
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+  ! shift/reduce conflict for SUB resolved as shift
+  ! shift/reduce conflict for ADD resolved as shift
+  ! shift/reduce conflict for GREATER resolved as shift
+  ! shift/reduce conflict for GREATEREQU resolved as shift
+  ! shift/reduce conflict for LESS resolved as shift
+  ! shift/reduce conflict for LESSEUQ resolved as shift
+  ! shift/reduce conflict for EQUEQU resolved as shift
+  ! shift/reduce conflict for NOTEQU resolved as shift
+    $end            reduce using rule 11 (expression -> expression GREATEREQU expression .)
+    POW             shift and go to state 9
+    MUL             shift and go to state 10
+    DIV             shift and go to state 11
+    SUB             shift and go to state 12
+    ADD             shift and go to state 13
+    GREATER         shift and go to state 14
+    GREATEREQU      shift and go to state 15
+    LESS            shift and go to state 16
+    LESSEUQ         shift and go to state 17
+    EQUEQU          shift and go to state 18
+    NOTEQU          shift and go to state 19
+
+  ! POW             [ reduce using rule 11 (expression -> expression GREATEREQU expression .) ]
+  ! MUL             [ reduce using rule 11 (expression -> expression GREATEREQU expression .) ]
+  ! DIV             [ reduce using rule 11 (expression -> expression GREATEREQU expression .) ]
+  ! SUB             [ reduce using rule 11 (expression -> expression GREATEREQU expression .) ]
+  ! ADD             [ reduce using rule 11 (expression -> expression GREATEREQU expression .) ]
+  ! GREATER         [ reduce using rule 11 (expression -> expression GREATEREQU expression .) ]
+  ! GREATEREQU      [ reduce using rule 11 (expression -> expression GREATEREQU expression .) ]
+  ! LESS            [ reduce using rule 11 (expression -> expression GREATEREQU expression .) ]
+  ! LESSEUQ         [ reduce using rule 11 (expression -> expression GREATEREQU expression .) ]
+  ! EQUEQU          [ reduce using rule 11 (expression -> expression GREATEREQU expression .) ]
+  ! NOTEQU          [ reduce using rule 11 (expression -> expression GREATEREQU expression .) ]
+
+
+state 29
+
+    (12) expression -> expression LESS expression .
+    (5) expression -> expression . POW expression
+    (6) expression -> expression . MUL expression
+    (7) expression -> expression . DIV expression
+    (8) expression -> expression . SUB expression
+    (9) expression -> expression . ADD expression
+    (10) expression -> expression . GREATER expression
+    (11) expression -> expression . GREATEREQU expression
+    (12) expression -> expression . LESS expression
+    (13) expression -> expression . LESSEUQ expression
+    (14) expression -> expression . EQUEQU expression
+    (15) expression -> expression . NOTEQU expression
+
+  ! shift/reduce conflict for POW resolved as shift
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+  ! shift/reduce conflict for SUB resolved as shift
+  ! shift/reduce conflict for ADD resolved as shift
+  ! shift/reduce conflict for GREATER resolved as shift
+  ! shift/reduce conflict for GREATEREQU resolved as shift
+  ! shift/reduce conflict for LESS resolved as shift
+  ! shift/reduce conflict for LESSEUQ resolved as shift
+  ! shift/reduce conflict for EQUEQU resolved as shift
+  ! shift/reduce conflict for NOTEQU resolved as shift
+    $end            reduce using rule 12 (expression -> expression LESS expression .)
+    POW             shift and go to state 9
+    MUL             shift and go to state 10
+    DIV             shift and go to state 11
+    SUB             shift and go to state 12
+    ADD             shift and go to state 13
+    GREATER         shift and go to state 14
+    GREATEREQU      shift and go to state 15
+    LESS            shift and go to state 16
+    LESSEUQ         shift and go to state 17
+    EQUEQU          shift and go to state 18
+    NOTEQU          shift and go to state 19
+
+  ! POW             [ reduce using rule 12 (expression -> expression LESS expression .) ]
+  ! MUL             [ reduce using rule 12 (expression -> expression LESS expression .) ]
+  ! DIV             [ reduce using rule 12 (expression -> expression LESS expression .) ]
+  ! SUB             [ reduce using rule 12 (expression -> expression LESS expression .) ]
+  ! ADD             [ reduce using rule 12 (expression -> expression LESS expression .) ]
+  ! GREATER         [ reduce using rule 12 (expression -> expression LESS expression .) ]
+  ! GREATEREQU      [ reduce using rule 12 (expression -> expression LESS expression .) ]
+  ! LESS            [ reduce using rule 12 (expression -> expression LESS expression .) ]
+  ! LESSEUQ         [ reduce using rule 12 (expression -> expression LESS expression .) ]
+  ! EQUEQU          [ reduce using rule 12 (expression -> expression LESS expression .) ]
+  ! NOTEQU          [ reduce using rule 12 (expression -> expression LESS expression .) ]
+
+
+state 30
+
+    (13) expression -> expression LESSEUQ expression .
+    (5) expression -> expression . POW expression
+    (6) expression -> expression . MUL expression
+    (7) expression -> expression . DIV expression
+    (8) expression -> expression . SUB expression
+    (9) expression -> expression . ADD expression
+    (10) expression -> expression . GREATER expression
+    (11) expression -> expression . GREATEREQU expression
+    (12) expression -> expression . LESS expression
+    (13) expression -> expression . LESSEUQ expression
+    (14) expression -> expression . EQUEQU expression
+    (15) expression -> expression . NOTEQU expression
+
+  ! shift/reduce conflict for POW resolved as shift
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+  ! shift/reduce conflict for SUB resolved as shift
+  ! shift/reduce conflict for ADD resolved as shift
+  ! shift/reduce conflict for GREATER resolved as shift
+  ! shift/reduce conflict for GREATEREQU resolved as shift
+  ! shift/reduce conflict for LESS resolved as shift
+  ! shift/reduce conflict for LESSEUQ resolved as shift
+  ! shift/reduce conflict for EQUEQU resolved as shift
+  ! shift/reduce conflict for NOTEQU resolved as shift
+    $end            reduce using rule 13 (expression -> expression LESSEUQ expression .)
+    POW             shift and go to state 9
+    MUL             shift and go to state 10
+    DIV             shift and go to state 11
+    SUB             shift and go to state 12
+    ADD             shift and go to state 13
+    GREATER         shift and go to state 14
+    GREATEREQU      shift and go to state 15
+    LESS            shift and go to state 16
+    LESSEUQ         shift and go to state 17
+    EQUEQU          shift and go to state 18
+    NOTEQU          shift and go to state 19
+
+  ! POW             [ reduce using rule 13 (expression -> expression LESSEUQ expression .) ]
+  ! MUL             [ reduce using rule 13 (expression -> expression LESSEUQ expression .) ]
+  ! DIV             [ reduce using rule 13 (expression -> expression LESSEUQ expression .) ]
+  ! SUB             [ reduce using rule 13 (expression -> expression LESSEUQ expression .) ]
+  ! ADD             [ reduce using rule 13 (expression -> expression LESSEUQ expression .) ]
+  ! GREATER         [ reduce using rule 13 (expression -> expression LESSEUQ expression .) ]
+  ! GREATEREQU      [ reduce using rule 13 (expression -> expression LESSEUQ expression .) ]
+  ! LESS            [ reduce using rule 13 (expression -> expression LESSEUQ expression .) ]
+  ! LESSEUQ         [ reduce using rule 13 (expression -> expression LESSEUQ expression .) ]
+  ! EQUEQU          [ reduce using rule 13 (expression -> expression LESSEUQ expression .) ]
+  ! NOTEQU          [ reduce using rule 13 (expression -> expression LESSEUQ expression .) ]
+
+
+state 31
+
+    (14) expression -> expression EQUEQU expression .
+    (5) expression -> expression . POW expression
+    (6) expression -> expression . MUL expression
+    (7) expression -> expression . DIV expression
+    (8) expression -> expression . SUB expression
+    (9) expression -> expression . ADD expression
+    (10) expression -> expression . GREATER expression
+    (11) expression -> expression . GREATEREQU expression
+    (12) expression -> expression . LESS expression
+    (13) expression -> expression . LESSEUQ expression
+    (14) expression -> expression . EQUEQU expression
+    (15) expression -> expression . NOTEQU expression
+
+  ! shift/reduce conflict for POW resolved as shift
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+  ! shift/reduce conflict for SUB resolved as shift
+  ! shift/reduce conflict for ADD resolved as shift
+  ! shift/reduce conflict for GREATER resolved as shift
+  ! shift/reduce conflict for GREATEREQU resolved as shift
+  ! shift/reduce conflict for LESS resolved as shift
+  ! shift/reduce conflict for LESSEUQ resolved as shift
+  ! shift/reduce conflict for EQUEQU resolved as shift
+  ! shift/reduce conflict for NOTEQU resolved as shift
+    $end            reduce using rule 14 (expression -> expression EQUEQU expression .)
+    POW             shift and go to state 9
+    MUL             shift and go to state 10
+    DIV             shift and go to state 11
+    SUB             shift and go to state 12
+    ADD             shift and go to state 13
+    GREATER         shift and go to state 14
+    GREATEREQU      shift and go to state 15
+    LESS            shift and go to state 16
+    LESSEUQ         shift and go to state 17
+    EQUEQU          shift and go to state 18
+    NOTEQU          shift and go to state 19
+
+  ! POW             [ reduce using rule 14 (expression -> expression EQUEQU expression .) ]
+  ! MUL             [ reduce using rule 14 (expression -> expression EQUEQU expression .) ]
+  ! DIV             [ reduce using rule 14 (expression -> expression EQUEQU expression .) ]
+  ! SUB             [ reduce using rule 14 (expression -> expression EQUEQU expression .) ]
+  ! ADD             [ reduce using rule 14 (expression -> expression EQUEQU expression .) ]
+  ! GREATER         [ reduce using rule 14 (expression -> expression EQUEQU expression .) ]
+  ! GREATEREQU      [ reduce using rule 14 (expression -> expression EQUEQU expression .) ]
+  ! LESS            [ reduce using rule 14 (expression -> expression EQUEQU expression .) ]
+  ! LESSEUQ         [ reduce using rule 14 (expression -> expression EQUEQU expression .) ]
+  ! EQUEQU          [ reduce using rule 14 (expression -> expression EQUEQU expression .) ]
+  ! NOTEQU          [ reduce using rule 14 (expression -> expression EQUEQU expression .) ]
+
+
+state 32
+
+    (15) expression -> expression NOTEQU expression .
+    (5) expression -> expression . POW expression
+    (6) expression -> expression . MUL expression
+    (7) expression -> expression . DIV expression
+    (8) expression -> expression . SUB expression
+    (9) expression -> expression . ADD expression
+    (10) expression -> expression . GREATER expression
+    (11) expression -> expression . GREATEREQU expression
+    (12) expression -> expression . LESS expression
+    (13) expression -> expression . LESSEUQ expression
+    (14) expression -> expression . EQUEQU expression
+    (15) expression -> expression . NOTEQU expression
+
+  ! shift/reduce conflict for POW resolved as shift
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+  ! shift/reduce conflict for SUB resolved as shift
+  ! shift/reduce conflict for ADD resolved as shift
+  ! shift/reduce conflict for GREATER resolved as shift
+  ! shift/reduce conflict for GREATEREQU resolved as shift
+  ! shift/reduce conflict for LESS resolved as shift
+  ! shift/reduce conflict for LESSEUQ resolved as shift
+  ! shift/reduce conflict for EQUEQU resolved as shift
+  ! shift/reduce conflict for NOTEQU resolved as shift
+    $end            reduce using rule 15 (expression -> expression NOTEQU expression .)
+    POW             shift and go to state 9
+    MUL             shift and go to state 10
+    DIV             shift and go to state 11
+    SUB             shift and go to state 12
+    ADD             shift and go to state 13
+    GREATER         shift and go to state 14
+    GREATEREQU      shift and go to state 15
+    LESS            shift and go to state 16
+    LESSEUQ         shift and go to state 17
+    EQUEQU          shift and go to state 18
+    NOTEQU          shift and go to state 19
+
+  ! POW             [ reduce using rule 15 (expression -> expression NOTEQU expression .) ]
+  ! MUL             [ reduce using rule 15 (expression -> expression NOTEQU expression .) ]
+  ! DIV             [ reduce using rule 15 (expression -> expression NOTEQU expression .) ]
+  ! SUB             [ reduce using rule 15 (expression -> expression NOTEQU expression .) ]
+  ! ADD             [ reduce using rule 15 (expression -> expression NOTEQU expression .) ]
+  ! GREATER         [ reduce using rule 15 (expression -> expression NOTEQU expression .) ]
+  ! GREATEREQU      [ reduce using rule 15 (expression -> expression NOTEQU expression .) ]
+  ! LESS            [ reduce using rule 15 (expression -> expression NOTEQU expression .) ]
+  ! LESSEUQ         [ reduce using rule 15 (expression -> expression NOTEQU expression .) ]
+  ! EQUEQU          [ reduce using rule 15 (expression -> expression NOTEQU expression .) ]
+  ! NOTEQU          [ reduce using rule 15 (expression -> expression NOTEQU expression .) ]
+
+
+state 33
+
+    (4) var_assign -> VAR EQU expression .
+    (5) expression -> expression . POW expression
+    (6) expression -> expression . MUL expression
+    (7) expression -> expression . DIV expression
+    (8) expression -> expression . SUB expression
+    (9) expression -> expression . ADD expression
+    (10) expression -> expression . GREATER expression
+    (11) expression -> expression . GREATEREQU expression
+    (12) expression -> expression . LESS expression
+    (13) expression -> expression . LESSEUQ expression
+    (14) expression -> expression . EQUEQU expression
+    (15) expression -> expression . NOTEQU expression
+
+    $end            reduce using rule 4 (var_assign -> VAR EQU expression .)
+    POW             shift and go to state 9
+    MUL             shift and go to state 10
+    DIV             shift and go to state 11
+    SUB             shift and go to state 12
+    ADD             shift and go to state 13
+    GREATER         shift and go to state 14
+    GREATEREQU      shift and go to state 15
+    LESS            shift and go to state 16
+    LESSEUQ         shift and go to state 17
+    EQUEQU          shift and go to state 18
+    NOTEQU          shift and go to state 19
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for POW in state 21 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 21 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 21 resolved as shift
+WARNING: shift/reduce conflict for SUB in state 21 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 21 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 21 resolved as shift
+WARNING: shift/reduce conflict for GREATEREQU in state 21 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 21 resolved as shift
+WARNING: shift/reduce conflict for LESSEUQ in state 21 resolved as shift
+WARNING: shift/reduce conflict for EQUEQU in state 21 resolved as shift
+WARNING: shift/reduce conflict for NOTEQU in state 21 resolved as shift
+WARNING: shift/reduce conflict for POW in state 23 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 23 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 23 resolved as shift
+WARNING: shift/reduce conflict for SUB in state 23 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 23 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 23 resolved as shift
+WARNING: shift/reduce conflict for GREATEREQU in state 23 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 23 resolved as shift
+WARNING: shift/reduce conflict for LESSEUQ in state 23 resolved as shift
+WARNING: shift/reduce conflict for EQUEQU in state 23 resolved as shift
+WARNING: shift/reduce conflict for NOTEQU in state 23 resolved as shift
+WARNING: shift/reduce conflict for POW in state 24 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 24 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 24 resolved as shift
+WARNING: shift/reduce conflict for SUB in state 24 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 24 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 24 resolved as shift
+WARNING: shift/reduce conflict for GREATEREQU in state 24 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 24 resolved as shift
+WARNING: shift/reduce conflict for LESSEUQ in state 24 resolved as shift
+WARNING: shift/reduce conflict for EQUEQU in state 24 resolved as shift
+WARNING: shift/reduce conflict for NOTEQU in state 24 resolved as shift
+WARNING: shift/reduce conflict for POW in state 25 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 25 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 25 resolved as shift
+WARNING: shift/reduce conflict for SUB in state 25 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 25 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 25 resolved as shift
+WARNING: shift/reduce conflict for GREATEREQU in state 25 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 25 resolved as shift
+WARNING: shift/reduce conflict for LESSEUQ in state 25 resolved as shift
+WARNING: shift/reduce conflict for EQUEQU in state 25 resolved as shift
+WARNING: shift/reduce conflict for NOTEQU in state 25 resolved as shift
+WARNING: shift/reduce conflict for POW in state 26 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 26 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 26 resolved as shift
+WARNING: shift/reduce conflict for SUB in state 26 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 26 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 26 resolved as shift
+WARNING: shift/reduce conflict for GREATEREQU in state 26 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 26 resolved as shift
+WARNING: shift/reduce conflict for LESSEUQ in state 26 resolved as shift
+WARNING: shift/reduce conflict for EQUEQU in state 26 resolved as shift
+WARNING: shift/reduce conflict for NOTEQU in state 26 resolved as shift
+WARNING: shift/reduce conflict for POW in state 27 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 27 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 27 resolved as shift
+WARNING: shift/reduce conflict for SUB in state 27 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 27 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 27 resolved as shift
+WARNING: shift/reduce conflict for GREATEREQU in state 27 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 27 resolved as shift
+WARNING: shift/reduce conflict for LESSEUQ in state 27 resolved as shift
+WARNING: shift/reduce conflict for EQUEQU in state 27 resolved as shift
+WARNING: shift/reduce conflict for NOTEQU in state 27 resolved as shift
+WARNING: shift/reduce conflict for POW in state 28 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 28 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 28 resolved as shift
+WARNING: shift/reduce conflict for SUB in state 28 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 28 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 28 resolved as shift
+WARNING: shift/reduce conflict for GREATEREQU in state 28 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 28 resolved as shift
+WARNING: shift/reduce conflict for LESSEUQ in state 28 resolved as shift
+WARNING: shift/reduce conflict for EQUEQU in state 28 resolved as shift
+WARNING: shift/reduce conflict for NOTEQU in state 28 resolved as shift
+WARNING: shift/reduce conflict for POW in state 29 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 29 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 29 resolved as shift
+WARNING: shift/reduce conflict for SUB in state 29 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 29 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 29 resolved as shift
+WARNING: shift/reduce conflict for GREATEREQU in state 29 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 29 resolved as shift
+WARNING: shift/reduce conflict for LESSEUQ in state 29 resolved as shift
+WARNING: shift/reduce conflict for EQUEQU in state 29 resolved as shift
+WARNING: shift/reduce conflict for NOTEQU in state 29 resolved as shift
+WARNING: shift/reduce conflict for POW in state 30 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 30 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 30 resolved as shift
+WARNING: shift/reduce conflict for SUB in state 30 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 30 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 30 resolved as shift
+WARNING: shift/reduce conflict for GREATEREQU in state 30 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 30 resolved as shift
+WARNING: shift/reduce conflict for LESSEUQ in state 30 resolved as shift
+WARNING: shift/reduce conflict for EQUEQU in state 30 resolved as shift
+WARNING: shift/reduce conflict for NOTEQU in state 30 resolved as shift
+WARNING: shift/reduce conflict for POW in state 31 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 31 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 31 resolved as shift
+WARNING: shift/reduce conflict for SUB in state 31 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 31 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 31 resolved as shift
+WARNING: shift/reduce conflict for GREATEREQU in state 31 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 31 resolved as shift
+WARNING: shift/reduce conflict for LESSEUQ in state 31 resolved as shift
+WARNING: shift/reduce conflict for EQUEQU in state 31 resolved as shift
+WARNING: shift/reduce conflict for NOTEQU in state 31 resolved as shift
+WARNING: shift/reduce conflict for POW in state 32 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 32 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 32 resolved as shift
+WARNING: shift/reduce conflict for SUB in state 32 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 32 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 32 resolved as shift
+WARNING: shift/reduce conflict for GREATEREQU in state 32 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 32 resolved as shift
+WARNING: shift/reduce conflict for LESSEUQ in state 32 resolved as shift
+WARNING: shift/reduce conflict for EQUEQU in state 32 resolved as shift
+WARNING: shift/reduce conflict for NOTEQU in state 32 resolved as shift
