@@ -50,6 +50,9 @@ def p_calc(p):
          | var_assign
          | empty
     '''
+    print("p_calc")
+    if((p[1][1]) != "=" ):
+        print(f"ST @print R{'2'}")
 
 def p_var_assign(p):
     '''
@@ -69,8 +72,8 @@ def p_var_assign(p):
 
     print("p_var_assign")
     print(p[1], p[3])
-    print(variable)
-
+    print(f"ST @{p[1]} R{'1'}")
+    variable[p[1]] = p[3]
 
 def p_expression(p):
     '''
@@ -90,11 +93,20 @@ def p_expression(p):
     p[0] = (p[1], p[2], p[3])
     ##
     print('p_expression:')
-    if( p[2] in [""]):
-        pass
+    operation = getOperation(p[2])
+    if( p[2] in ["==",'!=','<','<=','>','>=']):
+        #check here later
+        print(f"{operation} R{'1'} R{'2'} R{'3'}")
     elif( isinstance(p[1], int) and isinstance(p[3], int)):
-        print(f"{'1'}")
-    print( p[1], p[2], p[3])
+        print(f"{operation}i R{'1'} R{'2'} R{'3'}")
+    elif(isinstance(p[1], int)):
+        print(f"FL.i R{'1'} R{'1'}")
+        print(f"{operation}f R{'1'} R{'2'} R{'3'}")
+    elif( isinstance(p[3], int)):
+        print(f"FL.i R{'1'} R{'1'}")
+        print(f"{operation}f R{'1'} R{'2'} R{'3'}")
+    else:
+        print(f"{operation}f R{'1'} R{'2'} R{'3'}")
 
 def p_expression_int_float_sci(p):
     '''
@@ -122,7 +134,7 @@ def p_expression_var(p):
     '''
     p[0] = (p[1])
     print('p_expression_var:')
-    print( p[1])
+    print(f"LD R{'1'} @{p[1]}")
 
 
 def p_error(p):
