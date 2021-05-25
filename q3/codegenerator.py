@@ -1,20 +1,48 @@
-import sys,os
+import sys
+import os
 import ply.yacc as yacc
 sys.path.append("..")
-from compilerProject.q1.lexicalAnaylzer import tokens
 from compilerProject.q1.lexicalAnaylzer import lexer
+from compilerProject.q1.lexicalAnaylzer import tokens
 
-error_status = ""
 variable = {}
 undifineVar = ""
-writeFile = open( "./q3/61090041.asm", 'w')
+writeFile = open("./q3/61090041.asm", 'w')
 
 precedence = (
-    ('left','GREATER','GREATEREQU','LESS','LESSEUQ','EQUEQU','NOTEQU'),
-    ('left', 'ADD','SUB'),
-    ('left', 'MUL','DIV','INTDIV'),
+    ('left', 'GREATER', 'GREATEREQU', 'LESS', 'LESSEUQ', 'EQUEQU', 'NOTEQU'),
+    ('left', 'ADD', 'SUB'),
+    ('left', 'MUL', 'DIV', 'INTDIV'),
     ('left', 'POW')
 )
+
+def getOperation( operation ):
+    if( operation == "*" ):
+        return "MUL."
+    elif( operation == "+"):
+        return "ADD."
+    elif( operation == "-"):
+        return "SUB."
+    elif( operation == "/" ):
+        return "DIV."
+    elif( operation == "//" ):
+        return "DIV."
+    elif( operation == "==" ):
+        return "EQ.f"
+    elif( operation == "!=" ):
+        return "NE.f"
+    elif( operation == ">"):
+        return "GT.f"
+    elif( operation == ">="):
+        return "GE.f"
+    elif( operation == "<"):
+        return "LT.f"
+    elif( operation == "<="):
+        return "LE.f"
+    elif( operation ==  "=="):
+        return "EQ.f"
+    elif( operation == "!=" ):
+        return "NE.f"
 
 def p_calc(p):
     '''
@@ -31,14 +59,17 @@ def p_var_assign(p):
     global variable
     variable[p[1]] = 1
 
-    if( not str(p[3]).isdigit() ):
-        if( str(p[3]) not in variable ):
+    new_varable = str(p[3])
+    if(not new_varable.isdigit()):
+        if(new_varable not in variable):
             global undifineVar
-            undifineVar = str(p[3])
-            global error_status
-            error_status = "undefine"
-            result = str( abs(p.lexer.lexpos-2) )
+            undifineVar = new_varable
+            result = str(abs(p.lexer.lexpos-2))
             raise Exception(result)
+
+    print("p_var_assign")
+    print(p[1], p[3])
+    print(variable)
 
 
 def p_expression(p):
@@ -57,6 +88,13 @@ def p_expression(p):
                | expression NOTEQU expression
     '''
     p[0] = (p[1], p[2], p[3])
+    ##
+    print('p_expression:')
+    if( p[2] in [""]):
+        pass
+    elif( isinstance(p[1], int) and isinstance(p[3], int)):
+        print(f"{'1'}")
+    print( p[1], p[2], p[3])
 
 def p_expression_int_float_sci(p):
     '''
@@ -66,6 +104,10 @@ def p_expression_int_float_sci(p):
                | parentheses
     '''
     p[0] = p[1]
+    print('p_expression_int_float_sci:')
+    var = "1"
+    print(f"LD R{var} #{p[1]}")
+
 
 def p_parentheses(p):
     '''
@@ -73,17 +115,22 @@ def p_parentheses(p):
     '''
     p[0] = (p[1], p[2], p[3])
 
+
 def p_expression_var(p):
     '''
     expression : VAR
     '''
     p[0] = (p[1])
+    print('p_expression_var:')
+    print( p[1])
+
 
 def p_error(p):
     result = str(p.lexer.lineno)
     global error_status
     error_status = "error"
     raise Exception(result)
+
 
 def p_empty(p):
     '''
@@ -95,23 +142,22 @@ def p_empty(p):
 parser = yacc.yacc()
 path = os.getcwd()
 
-openFile = open( "./input.txt", 'r')
+openFile = open("./input.txt", 'r')
 body = openFile.read().split("\n")
 openFile.close()
 
 itemList = body
 
-for line in range( len(itemList)):
+for line in range(len(itemList)):
     try:
         itemList[line].replace(" ", "")
-        parser.parse( itemList[line] , lexer = lexer)
-        writeFile.write( '(' + itemList[line] + ')' + '\n')
+        print( itemList[line] + "\n")
+        parser.parse(itemList[line], lexer=lexer)
+        print("++++++++++++++++++++++++++++")
     except Exception as e:
-        if( error_status == "error" ):
-            error = "Error in line " + str(line + 1) + ", pos " + str(e) + '\n'
-        else:
-            error = "Undefined variable " + undifineVar +" at line "+ str(line + 1) + ", pos " + str(e) + "\n"
-        writeFile.write( error )
+        error = "ERROR\n"
+        writeFile.write(error)
+        print("++++++++++++Error+++++++++++++")
         continue
 
-print("\n+++++end of syntacticanalyzer++++\n")
+print("\n+++++end of condegenerator++++\n")
