@@ -7,7 +7,7 @@ from compilerProject.q1.lexicalAnaylzer import lexer
 error_status = ""
 variable = {}
 undifineVar = ""
-writeFile = open( "./q2/61090041.bracket", 'w')
+writeFile = open( "./q3/61090041.asm", 'w')
 
 precedence = (
     ('left','GREATER','GREATEREQU','LESS','LESSEUQ','EQUEQU','NOTEQU'),

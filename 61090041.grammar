@@ -1,0 +1,29 @@
+
+calc : expression
+     | var_assign
+     | empty
+
+var_assign : VAR = expression
+
+expression :
+           | expression >= expression
+           | expression > expression
+           | expression <= expression
+           | expression < expression
+           | expression != expression
+           | expression == expression
+           | expression + expression
+           | expression - expression
+           | expression // expression
+           | expression / expression
+           | expression * expression
+           | expression ^ expression
+           | INT
+           | FLOAT
+           | SCI
+           | VAR
+           | parentheses
+
+parentheses : ( expression )
+
+empty : none
