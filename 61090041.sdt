@@ -1,0 +1,100 @@
+
+calc : expression
+     | var_assign
+     | empty
+                    global register
+                    global variable
+                    global stringToFile
+                    if(len(p[1]) <= 1):
+                        addString(f"ST @print R{len(register)-1}")
+                        addTofile()
+                        stringToFile = ""
+
+                    elif((p[1][1]) != "="):
+                        addString(f"ST @print R{len(register)-1}")
+                        addTofile()
+                        stringToFile = ""
+                        register = {}
+
+var_assign : VAR = expression
+                                p[0] = (p[1], '=', p[3])
+                                global variable
+
+                                new_varable = str(p[3])
+                                if(not new_varable.isdigit()):
+                                    if(new_varable not in variable):
+                                        result = str(abs(p.lexer.lexpos-2))
+                                        raise Exception(result)
+
+                                variable[p[1]] = p[3]
+                                addString(f"ST @{p[1]} R{getReister(p[3])}" + '\n')
+                                variable[p[1]] = p[3]
+
+expression :
+           | expression >= expression
+           | expression > expression
+           | expression <= expression
+           | expression < expression
+           | expression != expression
+           | expression == expression
+           | expression + expression
+           | expression - expression
+           | expression // expression
+           | expression / expression
+           | expression * expression
+           | expression ^ expression
+                                    p[0] = (p[1], p[2], p[3])
+                                    temp = p[1]
+                                    if(type(p[1]) == tuple):
+                                        p[1] = calculateValue(p[1])
+                                    operation = getOperation(p[2])
+                                    global variable
+                                    global register
+                                    exp1 = p[1]
+                                    exp2 = p[3]
+                                    reg1 = getReister(p[1])
+                                    reg2 = getReister(p[3])
+                                    addRegister((temp, p[3]))
+                                    newReg = getReister((temp, p[3]))
+                                    newReg = len(register) - 1
+                                    if((type(exp1) == str)):
+                                        exp1 = variable[exp1]
+                                    if(type(exp2) == str):
+                                        exp2 = variable[exp2]
+                                    if(p[2] in ["==", '!=', '<', '<=', '>', '>=']):
+                                        if(isinstance(exp1, int)):
+                                            addString(f"FL.i R{reg1} R{reg1}")
+                                        if(isinstance(exp2, int)):
+                                            addString(f"FL.i R{reg2} R{reg2}")
+                                        addString(f"{operation} R{newReg} R{reg1} R{reg2}")
+                                    elif(isinstance(exp1, int) and isinstance(exp2, int)):
+                                        addString(f"{operation}i R{newReg} R{reg1} R{reg2}")
+                                    elif(isinstance(exp1, int)):
+                                        addString(f"FL.i R{reg1} R{reg1}")
+                                        addString(f"{operation}f R{newReg} R{reg1} R{reg2}")
+                                    elif(isinstance(exp2, int)):
+                                        addString(f"FL.i R{'1'} R{'1'}")
+                                        addString(f"{operation}f R{newReg} R{reg1} R{reg2}")
+                                    else:
+                                        addString(f"{operation}f R{newReg} R{reg1} R{reg2}")
+           | INT
+           | FLOAT
+           | SCI
+                    p[0] = p[1]
+                    if(type(p[1]) != tuple):
+                        addRegister(p[1])
+                        addString(f"LD R{getReister(p[1])} #{p[1]}")
+           | VAR
+                    p[0] = (p[1])
+                    pValue = p[1]
+                    global variable
+                    if(p[1] in variable):
+                        addRegister(pValue)
+                        addString(f"LD R{getReister(pValue)} @{pValue}")
+           | parentheses
+
+parentheses : ( expression )
+                            p[0] = (p[1], p[2], p[3])
+
+empty : none
+            p[0] = None
